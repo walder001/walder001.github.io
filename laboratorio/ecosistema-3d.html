@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="apple-touch-icon" href="../assets/favicon.png">
+<meta name="theme-color" content="#0F3346">
+<meta property="og:title" content="Walder Reyes de Jesús">
+<meta property="og:description" content="Ingeniero de software y emprendedor. IA, negocios, buenas prácticas y ciencia.">
+<meta property="og:image" content="../assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image"><title>Ecosistema |ψ⟩</title>
+<meta name="description" content="Walder Reyes: ingeniero de software y emprendedor. IA aplicada, productos digitales, arquitectura y ciencia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Martian+Mono:wdth,wght@75..112.5,300..700&family=Allura&display=swap">
+<style>
+  /* One committed dark world: abyss navy, signal cyan, current blue. Amber only marks drafts. */
+  :root {
+    --abyss: #050A14;
+    --deep: #0A1426;
+    --line: #1A2A44;
+    --line-2: #26395C;
+    --glass: rgba(14, 28, 52, .55);
+    --glass-hi: rgba(92, 225, 245, .16);
+    --cyan: #5CE1F5;
+    --blue: #2F80ED;
+    --frost: #EAF1F8;
+    --mist: #B0BFD3;
+    --slate: #7B8DAA;
+    --draft: #F2B84B;
+    --display: "Martian Mono", "Cascadia Mono", Consolas, monospace;
+    --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+    --script: "Allura", "Segoe Script", cursive;
+    --wrap: 1280px;
+    --pad: clamp(18px, 4vw, 52px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--abyss); color: var(--frost); font: 400 17px/1.62 var(--body); -webkit-font-smoothing: antialiased; }
+  body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+  a { color: inherit; }
+  p { margin: 0; }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; border-radius: 8px; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--pad); }
+  .mono { font-family: var(--display); font-stretch: 87.5%; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--slate); }
+  h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 500; font-stretch: 80%; letter-spacing: -.035em; text-wrap: balance; }
+  .glass { background: linear-gradient(160deg, rgba(20, 40, 72, .62), rgba(8, 16, 32, .72)); border: 1px solid var(--line-2); border-radius: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 30px 60px -30px rgba(0,0,0,.6); backdrop-filter: blur(14px); }
+  .glass:hover { border-color: rgba(92,225,245,.45); }
+
+  /* Buttons & chips */
+  .btn { display: inline-flex; align-items: center; gap: 10px; font: 600 15px var(--body); text-decoration: none; padding: 13px 22px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(10,20,38,.6); backdrop-filter: blur(8px); transition: border-color .25s, box-shadow .25s, background .25s; }
+  .btn:hover { border-color: var(--cyan); box-shadow: 0 0 0 4px rgba(92,225,245,.08); }
+  .btn.primary { color: #041019; border-color: transparent; background: linear-gradient(100deg, #7BE8F8, var(--cyan) 40%, #3E9BF0); box-shadow: 0 10px 34px -8px rgba(92,225,245,.6); }
+  .btn.sm { padding: 9px 16px; font-size: 13.5px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font: 400 10.5px var(--display); font-stretch: 87.5%; letter-spacing: .03em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; color: var(--mist); border: 1px solid var(--line-2); white-space: nowrap; }
+  .chip.draft { color: var(--draft); border: 1px dashed rgba(242,184,75,.55); }
+  .chip.real { color: var(--cyan); border-color: rgba(92,225,245,.4); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* Logo */
+  .mark { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 500 15px var(--display); font-stretch: 87.5%; letter-spacing: -.01em; }
+  .ket { width: 34px; height: 31px; overflow: visible; }
+  .ket path, .ket circle, .ket ellipse { fill: none; stroke: var(--cyan); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .ket .q { stroke-width: 1.4; opacity: .9; } .ket .q2 { stroke-width: 1; opacity: .45; } .ket .v { stroke-width: 1.5; stroke: var(--frost); }
+  .ket .dot { fill: var(--cyan); stroke: none; filter: drop-shadow(0 0 4px var(--cyan)); transform-origin: 19px 20px; }
+  .mark:hover .ket .dot { animation: precess 2.4s linear infinite; }
+  @keyframes precess { to { transform: rotate(360deg); } }
+  .mark b { color: var(--cyan); font-weight: 500; }
+
+  /* NAV */
+  nav { position: fixed; inset: 0 0 auto 0; z-index: 40; transition: background .3s, border-color .3s; border-bottom: 1px solid transparent; }
+  nav.solid { background: rgba(5,10,20,.82); backdrop-filter: blur(14px); border-color: var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 74px; }
+  .links { display: flex; align-items: center; gap: 26px; }
+  .links a { font-size: 14px; color: var(--mist); text-decoration: none; }
+  .links a:hover { color: var(--frost); }
+  .navright { display: flex; align-items: center; gap: 12px; }
+  .lang { display: inline-flex; border: 1px solid var(--line-2); border-radius: 999px; padding: 3px; }
+  .lang button { font: 500 11px var(--display); font-stretch: 87.5%; color: var(--mist); background: none; border: 0; padding: 6px 10px; border-radius: 999px; cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--cyan); color: #041019; }
+
+  /* HERO */
+  .hero { position: relative; height: min(96vh, 920px); min-height: 800px; overflow: hidden; background: var(--abyss); }
+  #scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: linear-gradient(90deg, rgba(5,10,20,.94) 0%, rgba(5,10,20,.7) 30%, rgba(5,10,20,0) 55%), linear-gradient(0deg, var(--abyss) 0%, rgba(5,10,20,0) 18%), linear-gradient(180deg, rgba(5,10,20,.7) 0%, rgba(5,10,20,0) 16%); }
+  .hero .wrap { position: relative; z-index: 3; height: 100%; display: flex; align-items: center; pointer-events: none; }
+  .hero-copy { width: min(560px, 46vw); display: grid; gap: 20px; pointer-events: auto; padding-top: 40px; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; color: var(--cyan); }
+  .eyebrow::before { content: ""; width: 30px; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); }
+  h1 { font-size: clamp(34px, 4.1vw, 60px); line-height: 1.04; }
+  h1, h2, h3, h4, .mono, .chip, .mark, .facts b, .about blockquote, .contact .mail, .lang button, .plate { font-variation-settings: "wdth" 78; }
+  h1 em { font-style: normal; color: transparent; background: linear-gradient(90deg, var(--cyan), #3E9BF0); -webkit-background-clip: text; background-clip: text; }
+  .lede { color: var(--mist); font-size: 18px; max-width: 52ch; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 0; margin-top: 6px; }
+  .facts div { padding: 2px 22px; border-left: 1px solid var(--line-2); display: grid; gap: 2px; }
+  .facts div:first-child { padding-left: 0; border-left: 0; }
+  .facts b { font: 500 26px var(--display); font-stretch: 80%; letter-spacing: -.03em; color: var(--frost); font-variant-numeric: tabular-nums; }
+  .facts span { font-size: 13px; color: var(--slate); line-height: 1.35; max-width: 16ch; }
+  .sign { display: flex; align-items: center; gap: 18px; margin-top: 6px; }
+  .sign .script { font: 400 44px/1 var(--script); color: var(--frost); opacity: .9; }
+  .sign .mono { line-height: 1.6; }
+  .rail { position: absolute; z-index: 3; left: 18px; top: 50%; transform: translateY(-50%); writing-mode: vertical-rl; rotate: 180deg; color: var(--slate); letter-spacing: .3em; }
+
+  /* Floating 3D-anchored panels */
+  .float { position: absolute; left: 0; top: 0; z-index: 2; width: 210px; padding: 16px 18px; pointer-events: auto; will-change: transform; transition: border-color .3s, box-shadow .3s; }
+  .float:hover { box-shadow: 0 0 0 1px rgba(92,225,245,.4), 0 0 40px -6px rgba(92,225,245,.45); }
+  .float .ic { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--glass-hi); margin-bottom: 10px; }
+  .float .ic svg { width: 19px; height: 19px; stroke: var(--cyan); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .float h3 { font-size: 17px; letter-spacing: -.02em; }
+  .float p { color: var(--mist); font-size: 13.5px; line-height: 1.4; margin-top: 4px; }
+  .plate { position: absolute; z-index: 2; left: 0; top: 0; pointer-events: none; color: var(--cyan); letter-spacing: .35em; text-shadow: 0 0 12px rgba(92,225,245,.6); white-space: nowrap; }
+
+  /* SECTIONS */
+  section { position: relative; padding: clamp(72px, 9vw, 120px) 0; }
+  .head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+  .head h2 { font-size: clamp(30px, 3.8vw, 50px); line-height: 1.05; }
+  .head p { color: var(--mist); max-width: 52ch; }
+  .kicker { display: flex; align-items: center; gap: 10px; color: var(--cyan); margin-bottom: 14px; }
+  .kicker::before { content: ""; width: 7px; height: 7px; background: var(--cyan); transform: rotate(45deg); box-shadow: 0 0 10px var(--cyan); }
+
+  /* BUILD cards */
+  .build { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: -40px; position: relative; z-index: 4; }
+  .bcard { display: grid; grid-template-rows: auto 150px auto auto; gap: 14px; padding: 22px; transition: border-color .3s, transform .3s; }
+  .bcard:hover { transform: translateY(-4px); }
+  .bcard .t { display: flex; align-items: center; gap: 10px; }
+  .bcard .t .ic { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: var(--glass-hi); }
+  .bcard .t .ic svg { width: 18px; height: 18px; stroke: var(--cyan); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .bcard h3 { font-size: 20px; letter-spacing: -.02em; }
+  .bcard p { color: var(--mist); font-size: 14.5px; line-height: 1.45; }
+  .viz { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: radial-gradient(120% 90% at 70% 20%, rgba(47,128,237,.22), transparent 60%), #071022; }
+  .bcard .foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  /* Mini visual: POS */
+  .pos { position: absolute; inset: 16px 20px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; }
+  .pos .screen { border: 1px solid var(--line-2); border-radius: 8px; padding: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; background: #0A1830; }
+  .pos .screen i { border-radius: 4px; background: linear-gradient(160deg, rgba(92,225,245,.35), rgba(47,128,237,.15)); }
+  .pos .screen i:nth-child(3n) { background: rgba(92,225,245,.1); }
+  .pos .ticket { border: 1px solid var(--line-2); border-radius: 8px; padding: 9px; display: grid; gap: 6px; align-content: start; background: #0A1830; }
+  .pos .ticket i { height: 5px; border-radius: 3px; background: var(--line-2); }
+  .pos .ticket i:nth-child(2) { width: 70%; } .pos .ticket i:nth-child(4) { width: 55%; }
+  .pos .ticket b { margin-top: 6px; height: 16px; border-radius: 4px; background: linear-gradient(90deg, var(--cyan), var(--blue)); }
+  /* Mini visual: Loans */
+  .loan { position: absolute; inset: 16px 18px; display: grid; grid-template-rows: 1fr auto; gap: 10px; }
+  .loan .bars { display: flex; align-items: end; gap: 7px; border-bottom: 1px solid var(--line-2); padding-bottom: 6px; }
+  .loan .bars i { flex: 1; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, var(--cyan), rgba(47,128,237,.25)); }
+  .loan .rows { display: grid; gap: 5px; }
+  .loan .rows div { display: grid; grid-template-columns: 14px 1fr 40px; gap: 8px; align-items: center; }
+  .loan .rows i { height: 5px; border-radius: 3px; background: var(--line-2); } .loan .rows i:first-child { height: 10px; width: 10px; border-radius: 50%; background: rgba(92,225,245,.45); }
+  .viz svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* ABOUT / PRINCIPLES / WORK grid */
+  .trio { display: grid; grid-template-columns: 1.35fr 1fr 1.15fr; gap: 16px; }
+  .about { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 24px; padding: 26px; align-items: center; }
+  .portrait { position: relative; aspect-ratio: 3/4; border-radius: 14px; border: 1px solid var(--line-2); overflow: hidden; display: grid; place-items: center;
+    background: radial-gradient(circle at 50% 40%, rgba(92,225,245,.25), transparent 60%), repeating-linear-gradient(0deg, rgba(92,225,245,.05) 0 1px, transparent 1px 14px), #081226; }
+  .portrait svg { width: 70%; }
+  .portrait .mono { position: absolute; bottom: 10px; left: 0; right: 0; text-align: center; }
+  .about blockquote { margin: 0 0 14px; font: 500 clamp(19px, 1.7vw, 23px)/1.25 var(--display); font-stretch: 80%; letter-spacing: -.02em; }
+  .about blockquote::before { content: "“"; color: var(--cyan); }
+  .about p { color: var(--mist); font-size: 15px; margin-bottom: 16px; }
+  .prin { padding: 26px; }
+  .prin h3, .work h3.title { font-size: 20px; margin-bottom: 16px; }
+  .prin ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .prin li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start; }
+  .prin li svg { width: 26px; height: 26px; stroke: var(--cyan); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .prin b { display: block; font-weight: 600; font-size: 15px; }
+  .prin span { color: var(--slate); font-size: 13.5px; line-height: 1.35; display: block; }
+  .work { padding: 26px; display: grid; gap: 12px; align-content: start; }
+  .work .top { display: flex; justify-content: space-between; align-items: baseline; }
+  .case { display: grid; gap: 6px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: rgba(5,10,20,.45); transition: border-color .3s; }
+  .case:hover { border-color: rgba(92,225,245,.45); }
+  .case .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .case h4 { margin: 0; font: 500 15.5px/1.25 var(--display); font-stretch: 82%; letter-spacing: -.02em; }
+  .case p { color: var(--mist); font-size: 13.5px; line-height: 1.4; }
+
+  /* LIST (writing + lab) */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .panel { padding: 26px; }
+  .panel h3 { font-size: 22px; margin-bottom: 6px; }
+  .panel > p { color: var(--mist); font-size: 15px; margin-bottom: 18px; }
+  .entries { display: grid; border-top: 1px solid var(--line); }
+  .entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; padding: 15px 0; border-bottom: 1px solid var(--line); align-items: center; }
+  .entry h4 { margin: 0; font: 500 16px/1.3 var(--display); font-stretch: 82%; letter-spacing: -.02em; }
+  .entry p { grid-column: 1 / -1; color: var(--slate); font-size: 13.5px; line-height: 1.4; }
+  .entry.first h4 { color: var(--cyan); }
+
+  /* NOW + CONTACT */
+  .now { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .now div { padding: 18px; display: grid; gap: 8px; align-content: start; }
+  .now p:last-child { font-size: 14.5px; color: var(--frost); line-height: 1.4; }
+  .contact { text-align: left; padding: clamp(36px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: center;
+    background: radial-gradient(80% 120% at 100% 0%, rgba(47,128,237,.28), transparent 60%), linear-gradient(160deg, rgba(20,40,72,.62), rgba(8,16,32,.8)); }
+  .contact h2 { font-size: clamp(34px, 4.6vw, 64px); line-height: 1; }
+  .contact .mail { display: inline-block; margin-top: 16px; font: 500 clamp(18px, 2vw, 26px) var(--display); font-stretch: 85%; color: var(--cyan); text-decoration: none; overflow-wrap: anywhere; }
+  .reasons { display: grid; gap: 14px; }
+  .reasons div { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 14px; }
+  .reasons i { width: 8px; height: 8px; margin-top: 8px; background: var(--cyan); transform: rotate(45deg); }
+  .reasons b { display: block; } .reasons span { color: var(--mist); font-size: 14.5px; }
+  body > footer { border-top: 1px solid var(--line); padding: 26px 0 36px; }
+  body > footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  body > footer nav { position: static; border: 0; display: flex; gap: 22px; }
+  body > footer nav a { color: var(--mist); text-decoration: none; font-size: 14px; }
+
+  @media (max-width: 1100px) {
+    .build { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .trio { grid-template-columns: 1fr; }
+    .now { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 960px) {
+    .links { display: none; }
+    .hero { height: auto; min-height: 0; }
+    .hero::after { background: linear-gradient(0deg, var(--abyss) 6%, rgba(5,10,20,.8) 50%, rgba(5,10,20,.15) 100%); }
+    .hero .wrap { padding-top: 330px; padding-bottom: 150px; }
+    .float, .plate, .rail { display: none; }
+    .two, .contact { grid-template-columns: 1fr; }
+    .about { grid-template-columns: 1fr; }
+    .portrait { max-width: 200px; }
+  }
+  @media (max-width: 620px) {
+    .build, .now { grid-template-columns: 1fr; }
+    .facts div { padding: 8px 14px 8px 0; border-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .bcard, .case, .float, .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav" aria-label="Principal">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="Walder Reyes, inicio">
+      <svg class="ket" viewBox="0 0 44 40" aria-hidden="true"><path d="M5 5v30"/><path d="M33 5l7 15-7 15"/><circle class="q" cx="19" cy="20" r="9"/><ellipse class="q2" cx="19" cy="20" rx="9" ry="3.2"/><path class="v" d="M19 20l5.6-6.6"/><circle class="dot" cx="25" cy="13" r="2.4"/></svg>
+      <span>walder<b>.</b>reyes</span>
+    </a>
+    <div class="links">
+      <a href="#construyo" data-i18n="nav.build">Lo que construyo</a>
+      <a href="#sobre-mi" data-i18n="nav.about">Sobre mí</a>
+      <a href="#escritos" data-i18n="nav.writing">Escritos</a>
+      <a href="#ahora" data-i18n="nav.now">Ahora</a>
+    </div>
+    <div class="navright">
+      <div class="lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <a class="btn sm" href="#contacto" data-i18n="nav.cta">Hablemos</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <p class="mono rail" aria-hidden="true" data-i18n="hero.rail">Ciencia · Sistemas · Productos · Futuro</p>
+
+  <article class="float glass" data-anchor="0">
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v1a3 3 0 0 0-2 5 3 3 0 0 0 2 5 4 4 0 0 0 8 0 3 3 0 0 0 2-5 3 3 0 0 0-2-5V7a4 4 0 0 0-4-4z"/><path d="M12 3v18M8 12h8"/></svg></div>
+    <h3 data-i18n="f1.t">IA aplicada</h3><p data-i18n="f1.p">Inteligencia real para procesos reales.</p>
+  </article>
+  <article class="float glass" data-anchor="1">
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+    <h3 data-i18n="f2.t">Automatización</h3><p data-i18n="f2.p">Procesos que se ejecutan solos.</p>
+  </article>
+  <article class="float glass" data-anchor="2">
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg></div>
+    <h3 data-i18n="f3.t">Arquitectura</h3><p data-i18n="f3.p">Sistemas sólidos, listos para crecer.</p>
+  </article>
+  <article class="float glass" data-anchor="3">
+    <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+    <h3 data-i18n="f4.t">Productos digitales</h3><p data-i18n="f4.p">Soluciones que se convierten en negocio.</p>
+  </article>
+  <p class="mono plate" aria-hidden="true">|ψ⟩ WALDER · ECOSYSTEM</p>
+
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="mono eyebrow" data-i18n="hero.eyebrow">Software Engineer · Emprendedor · Product Builder</p>
+      <h1 data-i18n-html="hero.title">Convierto procesos manuales en <em>sistemas que trabajan solos.</em></h1>
+      <p class="lede" data-i18n="hero.lede">Software, IA aplicada, automatización y productos digitales para negocios reales. Del problema a un sistema que escala.</p>
+      <div class="cta">
+        <a class="btn primary" href="#construyo"><span data-i18n="cta.work">Ver lo que construyo</span> <span aria-hidden="true">→</span></a>
+        <a class="btn" href="#contacto" data-i18n="cta.talk">Hablemos</a>
+      </div>
+      <div class="facts">
+        <div><b>5+</b><span data-i18n="fa1">años construyendo software</span></div>
+        <div><b>2</b><span data-i18n="fa2">productos propios en DWALD</span></div>
+        <div><b>2</b><span data-i18n="fa3">sectores: banca y consumo masivo</span></div>
+      </div>
+      <div class="sign">
+        <span class="script" aria-hidden="true">Walder Reyes</span>
+        <p class="mono" data-i18n-html="hero.sign">Senior Software Engineer<br>Cofundador de DWALD</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- WHAT I BUILD -->
+  <section id="construyo" style="padding-top:0">
+    <div class="wrap">
+      <div class="build">
+        <article class="bcard glass">
+          <div class="t"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><h3>DWALD Loan</h3></div>
+          <div class="viz" aria-hidden="true"><div class="loan"><div class="bars"><i style="height:38%"></i><i style="height:62%"></i><i style="height:48%"></i><i style="height:80%"></i><i style="height:66%"></i><i style="height:92%"></i></div><div class="rows"><div><i></i><i></i><i></i></div><div><i></i><i style="width:80%"></i><i></i></div></div></div></div>
+          <p data-i18n="b1.p">Gestión, organización y control de préstamos de financiamiento, más simple para quien presta.</p>
+          <div class="foot"><div class="tags"><span class="chip" data-i18n="b1.t1">Préstamos</span><span class="chip" data-i18n="b1.t2">Clientes</span><span class="chip">.NET</span></div><span class="chip real" data-i18n="b.product">Producto DWALD</span></div>
+        </article>
+        <article class="bcard glass">
+          <div class="t"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><h3>DWALD POS</h3></div>
+          <div class="viz" aria-hidden="true"><div class="pos"><div class="screen"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="ticket"><i></i><i></i><i></i><i></i><b></b></div></div></div>
+          <p data-i18n="b2.p">Punto de venta moderno para negocios que quieren vender más y controlar mejor.</p>
+          <div class="foot"><div class="tags"><span class="chip" data-i18n="b2.t1">Ventas</span><span class="chip" data-i18n="b2.t2">Inventario</span><span class="chip" data-i18n="b2.t3">Reportes</span></div><span class="chip real" data-i18n="b.product">Producto DWALD</span></div>
+        </article>
+        <article class="bcard glass">
+          <div class="t"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><path d="M7 6l3 5M7 18l3-5M14 12h3"/></svg></span><h3 data-i18n="b3.t">IA aplicada</h3></div>
+          <div class="viz" aria-hidden="true"><svg viewBox="0 0 260 150"><g stroke="#5CE1F5" stroke-opacity=".35" stroke-width="1"><path d="M40 30 130 40M40 30 130 75M40 75 130 40M40 75 130 110M40 120 130 75M40 120 130 110M130 40 220 60M130 75 220 60M130 75 220 95M130 110 220 95"/></g><g fill="#5CE1F5"><circle cx="40" cy="30" r="5"/><circle cx="40" cy="75" r="5"/><circle cx="40" cy="120" r="5"/><circle cx="130" cy="40" r="6" fill-opacity=".7"/><circle cx="130" cy="75" r="8"/><circle cx="130" cy="110" r="6" fill-opacity=".7"/><circle cx="220" cy="60" r="6"/><circle cx="220" cy="95" r="6"/></g><circle cx="130" cy="75" r="20" fill="none" stroke="#2F80ED" stroke-opacity=".5"/></svg></div>
+          <p data-i18n="b3.p">Automatización inteligente con Azure AI: documentos, datos y decisiones que ya no dependen de digitar a mano.</p>
+          <div class="foot"><div class="tags"><span class="chip">Azure AI</span><span class="chip" data-i18n="b3.t1">Documentos</span><span class="chip" data-i18n="b3.t2">Procesos</span></div></div>
+        </article>
+        <article class="bcard glass">
+          <div class="t"><span class="ic"><svg viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></svg></span><h3 data-i18n="b4.t">Arquitectura</h3></div>
+          <div class="viz" aria-hidden="true"><svg viewBox="0 0 260 150"><g fill="none" stroke="#5CE1F5" stroke-width="1.2"><path d="M130 22 196 50 130 78 64 50Z" fill="rgba(92,225,245,.12)"/><path d="M64 50v22l66 28 66-28V50" stroke-opacity=".8"/><path d="M64 80v22l66 28 66-28V80" stroke-opacity=".5"/><path d="M130 78v22M130 108v22" stroke-opacity=".5"/></g><g fill="#5CE1F5"><circle cx="130" cy="50" r="3"/><circle cx="97" cy="64" r="2"/><circle cx="163" cy="64" r="2"/></g></svg></div>
+          <p data-i18n="b4.p">Monolito Modular y buenas prácticas: sistemas escalables, seguros y preparados para lo que viene.</p>
+          <div class="foot"><div class="tags"><span class="chip">Modular Monolith</span><span class="chip" data-i18n="b4.t1">Buenas prácticas</span></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / PRINCIPLES / WORK -->
+  <section id="sobre-mi" style="padding-top:24px">
+    <div class="wrap trio">
+      <article class="about glass">
+        <div class="portrait" aria-hidden="true">
+          <svg viewBox="0 0 44 40"><g fill="none" stroke="#5CE1F5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v30" stroke-width="2"/><path d="M33 5l7 15-7 15" stroke-width="2"/><circle cx="19" cy="20" r="9" stroke-width="1.3"/><ellipse cx="19" cy="20" rx="9" ry="3.2" stroke-width=".9" opacity=".5"/><path d="M19 20l5.6-6.6" stroke="#EAF1F8" stroke-width="1.4"/></g><circle cx="25" cy="13" r="2.4" fill="#5CE1F5"/></svg>
+          <span class="mono" data-i18n="ab.photo">Foto próximamente</span>
+        </div>
+        <div>
+          <blockquote data-i18n="ab.q">Creo en la ciencia, en la IA y en lo que viene con la computación cuántica.</blockquote>
+          <p data-i18n="ab.p">Soy Walder Reyes, ingeniero de software y cofundador de DWALD, de San Francisco de Macorís. Empecé automatizando tareas que nadie me asignó en banca regulada; hoy impulso la transformación digital de un gran grupo de consumo masivo y construyo productos propios.</p>
+          <a class="btn sm" href="#ahora"><span data-i18n="ab.cta">En qué estoy ahora</span> <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+
+      <article class="prin glass">
+        <h3 data-i18n="pr.title">Lo que creo</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v1a3 3 0 0 0-2 5 3 3 0 0 0 2 5 4 4 0 0 0 8 0 3 3 0 0 0 2-5 3 3 0 0 0-2-5V7a4 4 0 0 0-4-4z"/></svg><p><b data-i18n="pr1.t">La revolución de la IA</b><span data-i18n="pr1.p">El cambio más profundo en cómo trabajamos desde internet.</span></p></li>
+          <li><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 19A1.5 1.5 0 0 0 6 21h12a1.5 1.5 0 0 0 1.5-2L14 9V3"/></svg><p><b data-i18n="pr2.t">La ciencia</b><span data-i18n="pr2.p">Decidir con evidencia: probar, medir y corregir.</span></p></li>
+          <li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg><p><b data-i18n="pr3.t">El futuro cuántico</b><span data-i18n="pr3.p">Entenderlo antes de que llegue a la industria.</span></p></li>
+          <li><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/></svg><p><b data-i18n="pr4.t">Buenas prácticas + innovación</b><span data-i18n="pr4.p">Innovar sin estándares crea deuda; sin innovar, estancamiento.</span></p></li>
+          <li><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><p><b data-i18n="pr5.t">Automatizar ≠ más código</b><span data-i18n="pr5.p">Menos pasos y menos fricción valen más que más líneas.</span></p></li>
+        </ul>
+      </article>
+
+      <article class="work glass" id="casos">
+        <div class="top"><h3 class="title" data-i18n="wk.title">Trabajo seleccionado</h3><span class="mono" data-i18n="wk.anon">Casos anonimizados</span></div>
+        <div class="case"><div class="row"><span class="mono" style="color:var(--cyan)">Order-to-Cash</span><span class="chip draft" data-i18n="st.draft">Borrador</span></div><h4 data-i18n="c1.t">Cuando conciliar pagos deja de ser manual</h4><p data-i18n="c1.p">Motor de identificación de pagos integrado con banco y ERP.</p></div>
+        <div class="case"><div class="row"><span class="mono" style="color:var(--cyan)">Azure AI</span><span class="chip draft" data-i18n="st.draft">Borrador</span></div><h4 data-i18n="c2.t">Del PDF a datos que operan solos</h4><p data-i18n="c2.p">IA documental integrada al flujo completo del proceso.</p></div>
+        <div class="case"><div class="row"><span class="mono" style="color:var(--cyan)">Modular Monolith</span><span class="chip draft" data-i18n="st.draft">Borrador</span></div><h4 data-i18n="c3.t">Por qué elegí un Monolito Modular</h4><p data-i18n="c3.p">Muchas iniciativas conviviendo en un solo portal corporativo.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- WRITING + LAB -->
+  <section id="escritos" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><div><p class="mono kicker" data-i18n="wr.kicker">Escritos y laboratorio</p><h2 data-i18n="wr.title">Lo que aprendo, lo comparto.</h2></div><p data-i18n="wr.lede">Un artículo nuevo cada mes y proyectos abiertos construidos en público.</p></div>
+      <div class="two">
+        <div class="panel glass">
+          <h3 data-i18n="wr.h">Escritos</h3><p data-i18n="wr.p">IA, negocios, buenas prácticas y ciencia.</p>
+          <div class="entries">
+            <div class="entry first"><h4 data-i18n="w1.t">La revolución de la IA ya empezó (y no es la que imaginas)</h4><span class="chip real" data-i18n="st.first">Primer artículo</span><p data-i18n="w1.p">Qué cambia para las empresas y los ingenieros, y cómo prepararse desde hoy.</p></div>
+            <div class="entry"><h4 data-i18n="w2.t">Computación cuántica para ingenieros de software</h4><span class="chip draft" data-i18n="st.draft">Borrador</span><p data-i18n="w2.p">Qubits, superposición y entrelazamiento desde la mirada de quien escribe código.</p></div>
+            <div class="entry"><h4 data-i18n="w3.t">Construir no es lo mismo que adoptar</h4><span class="chip draft" data-i18n="st.draft">Borrador</span><p data-i18n="w3.p">Lo que aprendí de un sistema que funcionaba bien y nadie usó.</p></div>
+          </div>
+        </div>
+        <div class="panel glass" id="laboratorio">
+          <h3 data-i18n="lab.h">Laboratorio</h3><p data-i18n="lab.p">Proyectos abiertos en GitHub, sin datos de ninguna empresa.</p>
+          <div class="entries">
+            <div class="entry"><h4 data-i18n="l1.t">Asistente con RAG sobre documentación técnica</h4><span class="chip" data-i18n="l.q1">T4 2026</span><p>.NET · Azure AI Foundry · RAG</p></div>
+            <div class="entry"><h4 data-i18n="l2.t">API de extracción de documentos con IA</h4><span class="chip" data-i18n="l.q2">T1 2027</span><p>ASP.NET Core · Azure AI Document Intelligence · CI/CD</p></div>
+            <div class="entry"><h4 data-i18n="l3.t">Plantilla de Monolito Modular en .NET</h4><span class="chip" data-i18n="l.q3">T2 2027</span><p>.NET · Clean Architecture · ADR</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOW -->
+  <section id="ahora" style="padding-top:0">
+    <div class="wrap">
+      <div class="head"><div><p class="mono kicker" data-i18n="now.kicker">Ahora · septiembre 2026</p><h2 data-i18n="now.title">En qué estoy hoy.</h2></div></div>
+      <div class="now">
+        <div class="glass"><p class="mono" data-i18n="now.l1">Aprendiendo</p><p data-i18n="now.v1">IA generativa: RAG y agentes.</p></div>
+        <div class="glass"><p class="mono" data-i18n="now.l2">Preparando</p><p data-i18n="now.v2">Certificación Azure AZ-204.</p></div>
+        <div class="glass"><p class="mono" data-i18n="now.l3">Construyendo</p><p data-i18n="now.v3">Productos DWALD y el primer proyecto del laboratorio.</p></div>
+        <div class="glass"><p class="mono" data-i18n="now.l4">Explorando</p><p data-i18n="now.v4">Fundamentos de computación cuántica.</p></div>
+        <div class="glass"><p class="mono" data-i18n="now.l5">Mejorando</p><p data-i18n="now.v5">Inglés profesional, cada semana.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contacto" style="padding-top:0">
+    <div class="wrap">
+      <div class="contact glass">
+        <div>
+          <p class="mono kicker" data-i18n="ct.kicker">Contacto</p>
+          <h2 data-i18n="ct.title">Construyamos algo grande.</h2>
+          <a class="mail" href="mailto:walderreyes34@gmail.com">walderreyes34@gmail.com ↗</a>
+          <div class="cta" style="margin-top:22px">
+            <a class="btn primary" href="mailto:walderreyes34@gmail.com" data-i18n="ct.btn">Escríbeme</a>
+            <a class="btn" href="https://www.linkedin.com/in/walder-reyes-de-jes%C3%BAs-514890182/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          </div>
+        </div>
+        <div class="reasons">
+          <div><i aria-hidden="true"></i><p><b data-i18n="r1.t">Conversar</b><span data-i18n="r1.p">IA aplicada, automatización, arquitectura o ciencia.</span></p></div>
+          <div><i aria-hidden="true"></i><p><b data-i18n="r2.t">Emprender y colaborar</b><span data-i18n="r2.p">Ideas de negocio, alianzas y proyectos abiertos.</span></p></div>
+          <div><i aria-hidden="true"></i><p><b data-i18n="r3.t">Oportunidades</b><span data-i18n="r3.p">Roles de Senior, liderazgo técnico o transformación digital.</span></p></div>
+          <p class="mono" style="margin-top:6px"><span data-i18n="ct.cv">¿Reclutador?</span> <a href="mailto:walderreyes34@gmail.com?subject=Solicitud%20de%20CV" style="color:var(--cyan)" data-i18n="ct.cvlink">Pídeme el CV</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="mark" href="#top"><svg class="ket" viewBox="0 0 44 40" aria-hidden="true"><path d="M5 5v30"/><path d="M33 5l7 15-7 15"/><circle class="q" cx="19" cy="20" r="9"/><ellipse class="q2" cx="19" cy="20" rx="9" ry="3.2"/><path class="v" d="M19 20l5.6-6.6"/><circle class="dot" cx="25" cy="13" r="2.4"/></svg><span>walder<b>.</b>reyes</span></a>
+    <nav aria-label="Pie de página"><a href="#construyo" data-i18n="nav.build">Lo que construyo</a><a href="#escritos" data-i18n="nav.writing">Escritos</a><a href="#contacto" data-i18n="ct.kicker">Contacto</a></nav>
+    <p class="mono" data-i18n="ft">Desde RD para el mundo · © 2026</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+/* ---------- i18n ---------- */
+const EN = {
+  "nav.build": "What I build", "nav.about": "About", "nav.writing": "Writing", "nav.now": "Now", "nav.cta": "Let's talk",
+  "hero.rail": "Science · Systems · Products · Future",
+  "f1.t": "Applied AI", "f1.p": "Real intelligence for real processes.", "f2.t": "Automation", "f2.p": "Processes that run themselves.",
+  "f3.t": "Architecture", "f3.p": "Solid systems, ready to grow.", "f4.t": "Digital products", "f4.p": "Solutions that become businesses.",
+  "hero.eyebrow": "Software Engineer · Entrepreneur · Product Builder",
+  "hero.title": "I turn manual processes into <em>systems that run themselves.</em>",
+  "hero.lede": "Software, applied AI, automation, and digital products for real businesses. From the problem to a system that scales.",
+  "cta.work": "See what I build", "cta.talk": "Let's talk",
+  "fa1": "years building software", "fa2": "own products at DWALD", "fa3": "sectors: banking and consumer goods",
+  "hero.sign": "Senior Software Engineer<br>Co-founder of DWALD",
+  "b1.p": "Management, organization, and control of financing loans, simpler for lenders.", "b1.t1": "Loans", "b1.t2": "Clients", "b.product": "DWALD product",
+  "b2.p": "A modern point of sale for businesses that want to sell more and stay in control.", "b2.t1": "Sales", "b2.t2": "Inventory", "b2.t3": "Reports",
+  "b3.t": "Applied AI", "b3.p": "Intelligent automation with Azure AI: documents, data, and decisions that no longer depend on manual entry.", "b3.t1": "Documents", "b3.t2": "Processes",
+  "b4.t": "Architecture", "b4.p": "Modular Monolith and best practices: scalable, secure systems ready for what comes next.", "b4.t1": "Best practices",
+  "ab.photo": "Photo coming soon", "ab.q": "I believe in science, in AI, and in what's coming with quantum computing.",
+  "ab.p": "I'm Walder Reyes, a software engineer and co-founder of DWALD, from San Francisco de Macorís. I started by automating tasks nobody assigned to me in regulated banking; today I drive digital transformation at a large consumer goods group and build my own products.",
+  "ab.cta": "What I'm on now",
+  "pr.title": "What I believe", "pr1.t": "The AI revolution", "pr1.p": "The deepest change in how we work since the internet.",
+  "pr2.t": "Science", "pr2.p": "Deciding with evidence: test, measure, and correct.", "pr3.t": "The quantum future", "pr3.p": "Understanding it before it reaches the industry.",
+  "pr4.t": "Best practices + innovation", "pr4.p": "Innovation without standards creates debt; standards without innovation, stagnation.",
+  "pr5.t": "Automation ≠ more code", "pr5.p": "Fewer steps and less friction are worth more than more lines.",
+  "wk.title": "Selected work", "wk.anon": "Anonymized cases", "st.draft": "Draft", "st.first": "First article",
+  "c1.t": "When reconciling payments stops being manual", "c1.p": "A payment-matching engine integrated with the bank and the ERP.",
+  "c2.t": "From PDF to data that runs on its own", "c2.p": "Document AI integrated into the full process workflow.",
+  "c3.t": "Why I chose a Modular Monolith", "c3.p": "Many initiatives living together in a single corporate portal.",
+  "wr.kicker": "Writing and lab", "wr.title": "What I learn, I share.", "wr.lede": "A new article every month and open projects built in public.",
+  "wr.h": "Writing", "wr.p": "AI, business, best practices, and science.",
+  "w1.t": "The AI revolution has already started (and it's not the one you imagine)", "w1.p": "What changes for companies and engineers, and how to prepare starting today.",
+  "w2.t": "Quantum computing for software engineers", "w2.p": "Qubits, superposition, and entanglement from the point of view of someone who writes code.",
+  "w3.t": "Building is not the same as adoption", "w3.p": "What I learned from a system that worked well and nobody used.",
+  "lab.h": "Lab", "lab.p": "Open projects on GitHub, with no data from any company.",
+  "l1.t": "RAG assistant over technical documentation", "l2.t": "AI document extraction API", "l3.t": "Modular Monolith template in .NET",
+  "l.q1": "Q4 2026", "l.q2": "Q1 2027", "l.q3": "Q2 2027",
+  "now.kicker": "Now · September 2026", "now.title": "What I'm on today.",
+  "now.l1": "Learning", "now.v1": "Generative AI: RAG and agents.", "now.l2": "Preparing", "now.v2": "Azure AZ-204 certification.",
+  "now.l3": "Building", "now.v3": "DWALD products and the first lab project.", "now.l4": "Exploring", "now.v4": "Quantum computing fundamentals.",
+  "now.l5": "Improving", "now.v5": "Professional English, every week.",
+  "ct.kicker": "Contact", "ct.title": "Let's build something big.", "ct.btn": "Email me",
+  "r1.t": "Talk", "r1.p": "Applied AI, automation, architecture, or science.", "r2.t": "Build and collaborate", "r2.p": "Business ideas, partnerships, and open projects.",
+  "r3.t": "Opportunities", "r3.p": "Senior, technical leadership, or digital transformation roles.",
+  "ct.cv": "Recruiter?", "ct.cvlink": "Ask me for my resume", "ft": "From the DR to the world · © 2026",
+};
+const ES = {};
+document.querySelectorAll("[data-i18n]").forEach((el) => { if (!(el.dataset.i18n in ES)) ES[el.dataset.i18n] = el.textContent; });
+document.querySelectorAll("[data-i18n-html]").forEach((el) => ES[el.dataset.i18nHtml] = el.innerHTML);
+function setLang(lang) {
+  const d = lang === "en" ? EN : ES;
+  document.querySelectorAll("[data-i18n]").forEach((el) => { const v = d[el.dataset.i18n]; if (v) el.textContent = v; });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => { const v = d[el.dataset.i18nHtml]; if (v) el.innerHTML = v; });
+  document.documentElement.lang = lang;
+  document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  try { localStorage.setItem("wr-lang", lang); } catch (e) {}
+}
+document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+try { if (localStorage.getItem("wr-lang") === "en") setLang("en"); } catch (e) {}
+
+const nav = document.getElementById("nav");
+const onScroll = () => nav.classList.toggle("solid", window.scrollY > 40);
+window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+/* ---------- 3D: the |ψ⟩ ecosystem ---------- */
+(function () {
+  const canvas = document.getElementById("scene");
+  const hero = canvas.parentElement;
+  const floats = [...document.querySelectorAll(".float")];
+  const plate = document.querySelector(".plate");
+  if (!window.THREE) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color("#050A14");
+  scene.fog = new THREE.FogExp2("#050A14", 0.028);
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 300);
+  const world = new THREE.Group(); scene.add(world);
+  const ADD = THREE.AdditiveBlending, CY = 0x5ce1f5, BL = 0x2f80ed, PALE = 0x9df0fb;
+
+  scene.add(new THREE.HemisphereLight(0x3b5b9a, 0x050a14, 0.9));
+  const key = new THREE.DirectionalLight(0x9cc4ff, 1.1); key.position.set(-8, 14, 10); scene.add(key);
+
+  const spr = document.createElement("canvas"); spr.width = spr.height = 64;
+  const sx = spr.getContext("2d"), sgr = sx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  sgr.addColorStop(0, "rgba(255,255,255,1)"); sgr.addColorStop(.3, "rgba(255,255,255,.45)"); sgr.addColorStop(1, "rgba(255,255,255,0)");
+  sx.fillStyle = sgr; sx.fillRect(0, 0, 64, 64);
+  const sprite = new THREE.CanvasTexture(spr);
+  const glow = (color, op, s) => { const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: sprite, color, transparent: true, opacity: op, depthWrite: false, blending: ADD })); m.scale.set(s, s, 1); return m; };
+  const lineMat = (color, op) => new THREE.LineBasicMaterial({ color, transparent: true, opacity: op, depthWrite: false, blending: ADD });
+
+  /* Data city */
+  const win = document.createElement("canvas"); win.width = 64; win.height = 128;
+  const wx = win.getContext("2d"); wx.fillStyle = "#000"; wx.fillRect(0, 0, 64, 128);
+  for (let y = 4; y < 124; y += 8) for (let x = 4; x < 60; x += 8) {
+    const r = Math.random();
+    if (r < .28) { wx.fillStyle = r < .06 ? "#bfeeff" : r < .18 ? "#3E9BF0" : "#1b4c86"; wx.fillRect(x, y, 4, 3); }
+  }
+  const winTex = new THREE.CanvasTexture(win);
+  const bGeo = new THREE.BoxGeometry(1, 1, 1);
+  const bMat = new THREE.MeshStandardMaterial({ color: 0x0a1528, roughness: .6, metalness: .6, emissive: 0xffffff, emissiveMap: winTex, emissiveIntensity: .85 });
+  const COUNT = 320, city = new THREE.InstancedMesh(bGeo, bMat, COUNT);
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), pos3 = new THREE.Vector3(), scl = new THREE.Vector3();
+  let placed = 0, guard = 0;
+  while (placed < COUNT && guard++ < 5000) {
+    const a = Math.random() * Math.PI * 2, r = 8 + Math.pow(Math.random(), .7) * 34;
+    const x = Math.cos(a) * r, z = Math.sin(a) * r;
+    if (z > -3 && Math.abs(x) < 12) continue;          // keep the view to the platform clear
+    const w = .8 + Math.random() * 1.8, d = .8 + Math.random() * 1.8, h = 2 + Math.pow(Math.random(), 2) * (r < 16 ? 9 : 16);
+    pos3.set(x, h / 2 - .25, z); scl.set(w, h, d); m4.compose(pos3, q, scl); city.setMatrixAt(placed++, m4);
+  }
+  city.count = placed; world.add(city);
+
+  const grid = new THREE.GridHelper(120, 120, BL, 0x13223d);
+  grid.material.transparent = true; grid.material.opacity = .22; grid.position.y = -.25; world.add(grid);
+
+  /* Platform */
+  const plat = new THREE.Mesh(new THREE.CylinderGeometry(5, 5.3, .5, 96), new THREE.MeshStandardMaterial({ color: 0x0b1628, metalness: .85, roughness: .35, emissive: 0x06122a }));
+  world.add(plat);
+  [[5.02, .26, CY, .9], [4.2, .26, BL, .6], [5.32, -.24, CY, .35]].forEach(([r, y, c, o]) => {
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(r, .025, 8, 160), new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: o }));
+    ring.rotation.x = Math.PI / 2; ring.position.y = y; world.add(ring);
+  });
+
+  /* Glass monolith */
+  const mono = new THREE.Group(); mono.position.y = 2.35; world.add(mono);
+  const mGeo = new THREE.BoxGeometry(3, 3.9, .38);
+  mono.add(new THREE.Mesh(mGeo, new THREE.MeshStandardMaterial({ color: 0x17335c, metalness: .2, roughness: .08, transparent: true, opacity: .3 })));
+  mono.add(new THREE.LineSegments(new THREE.EdgesGeometry(mGeo), lineMat(CY, .9)));
+  mono.add(glow(BL, .55, 7));
+
+  // |ψ⟩ emblem drawn from the logo paths
+  const em = document.createElement("canvas"); em.width = em.height = 512;
+  const ex = em.getContext("2d"); ex.scale(512 / 44, 512 / 44); ex.translate(0, 2);
+  ex.lineCap = "round"; ex.lineJoin = "round"; ex.strokeStyle = "#5CE1F5"; ex.shadowColor = "#5CE1F5"; ex.shadowBlur = 2;
+  ex.lineWidth = 2.2; ex.stroke(new Path2D("M5 5v30")); ex.stroke(new Path2D("M33 5l7 15-7 15"));
+  ex.lineWidth = 1.4; ex.stroke(new Path2D("M28 20a9 9 0 1 1-18 0a9 9 0 1 1 18 0"));
+  ex.globalAlpha = .45; ex.lineWidth = 1; ex.beginPath(); ex.ellipse(19, 20, 9, 3.2, 0, 0, Math.PI * 2); ex.stroke(); ex.globalAlpha = 1;
+  ex.strokeStyle = "#EAF1F8"; ex.lineWidth = 1.5; ex.stroke(new Path2D("M19 20l5.6-6.6"));
+  ex.fillStyle = "#9DF0FB"; ex.beginPath(); ex.arc(25, 13, 2.4, 0, Math.PI * 2); ex.fill();
+  const emblem = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 2.3), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(em), transparent: true, depthWrite: false, blending: ADD }));
+  emblem.position.set(0, .15, .21); mono.add(emblem);
+
+  // Quantum core orbiting behind the emblem
+  const core = new THREE.Group(); core.position.set(0, .15, -.02); mono.add(core);
+  const orbitals = [0, 1, 2].map((i) => {
+    const o = new THREE.Mesh(new THREE.TorusGeometry(1.25, .012, 6, 120), new THREE.MeshBasicMaterial({ color: i === 1 ? BL : CY, transparent: true, opacity: .55 }));
+    o.rotation.set(Math.PI / 2 + i * .9, i * .6, 0); core.add(o); return o;
+  });
+  const electrons = [0, 1, 2].map(() => { const g = glow(PALE, 1, .35); core.add(g); return g; });
+  core.add(glow(CY, .9, 1.4));
+
+  /* Beams to floating panels */
+  const anchors = [new THREE.Vector3(-4.6, 5.6, 1.4), new THREE.Vector3(4.8, 5.9, .8), new THREE.Vector3(-5.2, 2.0, 2.2), new THREE.Vector3(5.4, 2.3, 2.0)];
+  const beamGeo = new THREE.BufferGeometry(), beamPos = new Float32Array(anchors.length * 6);
+  anchors.forEach((a, i) => { beamPos.set([0, 2.5, 0, a.x, a.y, a.z], i * 6); });
+  beamGeo.setAttribute("position", new THREE.BufferAttribute(beamPos, 3));
+  world.add(new THREE.LineSegments(beamGeo, lineMat(CY, .28)));
+  const pulses = anchors.map(() => { const g = glow(PALE, 1, .32); world.add(g); return { g, t: Math.random() }; });
+  const nodes = anchors.map((a) => { const g = glow(CY, .9, .6); g.position.copy(a); world.add(g); return g; });
+
+  /* Rising particles */
+  const N = 420, pp = new Float32Array(N * 3), ps = [];
+  for (let i = 0; i < N; i++) { const a = Math.random() * 6.28, r = 1 + Math.random() * 6; ps.push({ a, r, y: Math.random() * 9, v: .006 + Math.random() * .018 }); }
+  const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute("position", new THREE.BufferAttribute(pp, 3));
+  world.add(new THREE.Points(pGeo, new THREE.PointsMaterial({ size: .07, map: sprite, color: PALE, transparent: true, opacity: .75, depthWrite: false, blending: ADD })));
+
+  let composer = null, bloom = null;
+  if (THREE.EffectComposer && THREE.UnrealBloomPass) {
+    composer = new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene, camera));
+    bloom = new THREE.UnrealBloomPass(new THREE.Vector2(1, 1), .95, .55, .18);
+    composer.addPass(bloom);
+  }
+
+  let mx = 0, my = 0, t = 0, narrow = false, W = 1, H = 1;
+  hero.addEventListener("pointermove", (e) => { const r = hero.getBoundingClientRect(); mx = ((e.clientX - r.left) / r.width) * 2 - 1; my = ((e.clientY - r.top) / r.height) * 2 - 1; });
+  hero.addEventListener("pointerleave", () => { mx = my = 0; });
+
+  function layout() {
+    W = hero.clientWidth; H = hero.clientHeight; narrow = W < 960;
+    renderer.setSize(W, H, false);
+    if (composer) { composer.setSize(W, H); bloom.resolution.set(W, H); }
+    camera.aspect = W / H; camera.updateProjectionMatrix();
+    world.position.set(narrow ? 0 : 7.2 * Math.min(1, W / 1400) + 1.2, narrow ? 1.2 : 0, 0);
+  }
+  window.addEventListener("resize", layout); layout();
+
+  const tmp = new THREE.Vector3();
+  function project(v, el, dx = 0, dy = 0, clamp = false) {
+    tmp.copy(v).applyMatrix4(world.matrixWorld).project(camera);
+    let x = (tmp.x * .5 + .5) * W + dx, y = (-tmp.y * .5 + .5) * H + dy;
+    if (clamp) { x = Math.min(Math.max(x, W * .52 + 120), W - 130); y = Math.min(Math.max(y, 150), H - 120); }
+    el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+  }
+
+  function frame(dt) {
+    t += dt;
+    const ang = mx * .18 + Math.sin(t * .1) * .05;
+    camera.position.set(Math.sin(ang) * 19, 5.4 - my * .9, Math.cos(ang) * 19);
+    camera.lookAt(world.position.x * .55, 3.1, 0);
+
+    mono.position.y = 2.35 + Math.sin(t * 1.1) * .06;
+    orbitals.forEach((o, i) => { o.rotation.z += dt * (.6 + i * .25); });
+    electrons.forEach((e, i) => { const a = t * (1.6 + i * .5) + i * 2.1; const o = orbitals[i];
+      tmp.set(Math.cos(a) * 1.25, Math.sin(a) * 1.25, 0).applyEuler(o.rotation); e.position.copy(tmp); });
+
+    pulses.forEach((p, i) => { p.t = (p.t + dt * .35) % 1; const a = anchors[i]; p.g.position.set(a.x * p.t, 2.5 + (a.y - 2.5) * p.t, a.z * p.t); p.g.material.opacity = Math.sin(p.t * Math.PI); });
+    nodes.forEach((n, i) => { n.position.y = anchors[i].y + Math.sin(t * 1.2 + i) * .12; });
+
+    for (let i = 0; i < N; i++) { const s = ps[i]; s.y += s.v; if (s.y > 9) s.y = 0; s.a += .002; pp[i * 3] = Math.cos(s.a) * s.r; pp[i * 3 + 1] = s.y; pp[i * 3 + 2] = Math.sin(s.a) * s.r; }
+    pGeo.attributes.position.needsUpdate = true;
+
+    scene.updateMatrixWorld();
+    if (!narrow) {
+      floats.forEach((el, i) => { tmp.copy(anchors[i]); tmp.y += Math.sin(t * 1.2 + i) * .12; project(tmp, el, i % 2 ? 90 : -60, 0, true); });
+      project(new THREE.Vector3(0, -.05, 5.3), plate);
+    }
+    composer ? composer.render() : renderer.render(scene, camera);
+  }
+
+  if (reduce) { frame(1 / 60); return; }
+  let last = performance.now(), visible = true;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(hero);
+  (function loop(now) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    if (visible && !document.hidden) frame(dt);
+  })(last);
+})();
+</script>
+
+</body>
+</html>

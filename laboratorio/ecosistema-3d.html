@@ -6,13 +6,12 @@
 <link rel="icon" type="image/png" href="../assets/favicon.png">
 <meta name="theme-color" content="#0F3346">
 <title>Ecosistema |ψ⟩ — Laboratorio · Walder Reyes</title>
-<meta name="description" content="El sistema corriendo: los subsistemas que construyo, sus integraciones y el monolito modular que los sostiene, como una ciudad por la que se puede volar.">
+<meta name="description" content="Un pago atravesando el sistema. Dos carriles, el manual y el automatizado, con el mismo trabajo por delante. Manda uno y van parejos; manda veinte y se ve la diferencia.">
 <link rel="canonical" href="https://walder001.github.io/laboratorio/ecosistema-3d.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
-  /* Same tokens as the portfolio and as Colapso: the lab is one instrument. */
   :root {
     --void: #0F3346; --void-rgb: 15,51,70;
     --panel: #143D52; --panel-rgb: 20,61,82;
@@ -67,7 +66,6 @@
   #scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; }
   #scene.over { cursor: pointer; }
 
-  /* ---- Top bar ---- */
   .top { position: fixed; z-index: 20; inset: 0 0 auto 0; display: flex; align-items: center; gap: 10px 16px;
          flex-wrap: wrap; padding: 14px var(--pad); pointer-events: none; }
   .top > * { pointer-events: auto; }
@@ -90,32 +88,40 @@
   .icon-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .icon-btn .sun { display: var(--show-sun); } .icon-btn .moon { display: var(--show-moon); }
 
-  /* ---- Legend ---- */
-  .legend { position: fixed; z-index: 15; left: var(--pad); top: 76px; width: 258px; max-width: calc(100vw - var(--pad) * 2);
-            border: 1px solid var(--line); border-radius: 10px; padding: 14px 15px;
-            background: rgba(var(--panel-rgb),.62); backdrop-filter: blur(10px); }
-  .legend h1 { font-size: 15px; letter-spacing: -.03em; }
-  .legend .lede { margin-top: 8px; font-size: 13.5px; line-height: 1.55; color: var(--muted); }
-  .legend .key { margin-top: 13px; display: grid; gap: 7px; }
-  .legend .key div { display: flex; align-items: center; gap: 9px; font: 400 11px var(--mono); color: var(--faint); letter-spacing: .04em; }
-  .legend .key i { width: 15px; height: 2px; border-radius: 2px; background: var(--emerald); flex: none; }
-  .legend .key i.core { height: 9px; width: 9px; border-radius: 2px; background: none; border: 1.5px solid var(--emerald); }
-  .legend .key i.ext { height: 7px; width: 7px; border-radius: 50%; background: var(--faint); }
+  /* ---- Scoreboard: the whole argument lives here ---- */
+  .board { position: fixed; z-index: 15; left: var(--pad); top: 76px; width: 292px; max-width: calc(100vw - var(--pad) * 2);
+           border: 1px solid var(--line); border-radius: 10px; padding: 14px 15px;
+           background: rgba(var(--panel-rgb),.66); backdrop-filter: blur(10px); }
+  .board h1 { font-size: 15px; letter-spacing: -.03em; }
+  .board .lede { margin-top: 7px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+  .lane-row { margin-top: 13px; }
+  .lane-row .hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .lane-row .nm { display: flex; align-items: center; gap: 8px; font: 400 11.5px var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+  .lane-row .nm i { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  .lane-row.auto .nm i { background: var(--emerald); }
+  .lane-row.manual .nm i { background: var(--faint); }
+  .lane-row .done { font: 700 15px var(--mono); font-variant-numeric: tabular-nums; }
+  .lane-row.auto .done { color: var(--emerald); }
+  .lane-row.manual .done { color: var(--muted); }
+  .lane-row .q { margin-top: 5px; display: flex; align-items: center; gap: 8px; font: 400 11px var(--mono); color: var(--faint); }
+  .lane-row .bar { flex: 1; height: 4px; border-radius: 2px; background: rgba(var(--light-rgb),.12); overflow: hidden; }
+  .lane-row .bar i { display: block; height: 100%; width: 0%; border-radius: 2px; transition: width .2s linear; }
+  .lane-row.auto .bar i { background: var(--emerald); }
+  .lane-row.manual .bar i { background: var(--amber); }
+  .board .note { margin-top: 13px; padding-top: 11px; border-top: 1px solid var(--line);
+                 font: 400 11px/1.55 var(--mono); color: var(--faint); letter-spacing: .02em; }
 
-  /* ---- District panel, anchored to its landmark ---- */
-  .detail { position: fixed; z-index: 18; width: 306px; max-width: calc(100vw - var(--pad) * 2);
+  .detail { position: fixed; z-index: 18; width: 300px; max-width: calc(100vw - var(--pad) * 2);
             border: 1px solid rgba(var(--amber-rgb),.5); border-radius: 12px; padding: 16px 17px 17px;
             background: rgba(var(--panel-rgb),.82); backdrop-filter: blur(14px);
             box-shadow: 0 18px 60px -22px rgba(0,0,0,.7); opacity: 0; transform: translateY(6px);
             transition: opacity .3s ease, transform .3s ease; }
   .detail.show { opacity: 1; transform: none; }
   .detail .kicker { color: var(--amber); }
-  .detail h2 { margin-top: 7px; font-size: 21px; }
+  .detail h2 { margin-top: 7px; font-size: 20px; }
   .detail p { margin-top: 9px; font-size: 14.5px; line-height: 1.6; color: var(--muted); }
   .detail .chips { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
   .detail .chips span { font: 400 11px var(--mono); color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
-  .detail .wires { margin-top: 12px; font: 400 11px/1.6 var(--mono); color: var(--faint); letter-spacing: .03em; }
-  .detail .wires b { color: var(--emerald); font-weight: 400; }
   .detail .go { display: inline-flex; align-items: center; gap: 9px; margin-top: 15px; text-decoration: none;
                 font: 700 12.5px var(--mono); padding: 11px 16px; border-radius: 8px;
                 background: var(--amber); color: var(--void); border: 1px solid var(--amber); }
@@ -124,48 +130,58 @@
                border: 1px solid transparent; background: none; color: var(--faint); cursor: pointer; font: 400 15px var(--mono); line-height: 1; }
   .detail .x:hover { border-color: var(--line); color: var(--text); }
 
-  /* ---- Bottom console ---- */
+  /* ---- Station labels projected onto the 3D ---- */
+  .tags { position: fixed; inset: 0; z-index: 12; pointer-events: none; }
+  .tag { position: absolute; top: 0; left: 0; white-space: nowrap; font: 400 11px var(--mono);
+         letter-spacing: .05em; text-transform: uppercase; color: var(--muted);
+         padding: 4px 9px; border-radius: 6px; border: 1px solid var(--line);
+         background: rgba(var(--panel-rgb),.62); backdrop-filter: blur(8px); }
+  .tag.on { color: var(--amber); border-color: rgba(var(--amber-rgb),.55); }
+  .tag.lane { font-weight: 700; letter-spacing: .08em; }
+  .tag.lane.auto { color: var(--emerald); border-color: var(--emerald); }
+
   .console { position: fixed; z-index: 20; inset: auto 0 0 0; display: flex; flex-wrap: wrap;
              align-items: center; justify-content: center; gap: 8px; padding: 12px var(--pad) calc(12px + env(safe-area-inset-bottom, 0px)); }
-  .districts { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
-  .district { display: inline-flex; align-items: center; gap: 7px; font: 400 11.5px var(--mono); letter-spacing: .04em;
-              color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer;
-              background: rgba(var(--panel-rgb),.62); backdrop-filter: blur(10px); transition: color .2s, border-color .2s, background .2s; }
-  .district .k { color: var(--faint); }
-  .district:hover { border-color: var(--emerald); color: var(--emerald); }
-  .district[aria-pressed="true"] { border-color: var(--amber); color: var(--amber); background: rgba(var(--amber-rgb),.14); }
-  .district[aria-pressed="true"] .k { color: var(--amber); }
   .op { font: 700 11.5px var(--mono); letter-spacing: .04em; color: var(--text); border: 1px solid var(--line);
-        border-radius: 999px; padding: 8px 16px; cursor: pointer; background: rgba(var(--panel-rgb),.62); backdrop-filter: blur(10px); }
+        border-radius: 999px; padding: 9px 17px; cursor: pointer; background: rgba(var(--panel-rgb),.62); backdrop-filter: blur(10px); }
   .op:hover { border-color: var(--emerald); }
+  .op.primary { background: var(--emerald); color: var(--void); border-color: var(--emerald); }
   .op[disabled] { opacity: .4; cursor: not-allowed; }
-  .hint { position: fixed; z-index: 15; right: var(--pad); bottom: 68px; max-width: 250px; text-align: right;
+  .stations { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+  .station { display: inline-flex; align-items: center; gap: 7px; font: 400 11.5px var(--mono); letter-spacing: .04em;
+             color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px; cursor: pointer;
+             background: rgba(var(--panel-rgb),.62); backdrop-filter: blur(10px); }
+  .station .k { color: var(--faint); }
+  .station:hover { border-color: var(--emerald); color: var(--emerald); }
+  .station[aria-pressed="true"] { border-color: var(--amber); color: var(--amber); background: rgba(var(--amber-rgb),.14); }
+  .hint { position: fixed; z-index: 15; right: var(--pad); bottom: 68px; max-width: 244px; text-align: right;
           padding: 8px 11px; border-radius: 8px; border: 1px solid var(--line);
           background: rgba(var(--panel-rgb),.62); backdrop-filter: blur(10px); }
 
   .fallback { position: fixed; inset: 0; z-index: 5; display: none; place-items: center; text-align: center; padding: var(--pad); }
   .fallback p { max-width: 430px; color: var(--muted); }
   body.no-webgl .fallback { display: grid; }
-  body.no-webgl .legend, body.no-webgl .hint, body.no-webgl .console { display: none; }
+  body.no-webgl .board, body.no-webgl .hint, body.no-webgl .console, body.no-webgl .tags { display: none; }
 
   @media (max-width: 900px) {
-    .legend { top: auto; bottom: calc(var(--console-h, 132px) + 12px); left: var(--pad); right: var(--pad); width: auto; }
-    .legend .key { display: none; }
-    .hint { display: none; }
+    .board { top: auto; bottom: calc(var(--console-h, 132px) + 12px); left: var(--pad); right: var(--pad); width: auto; }
+    .board .lede, .board .note { display: none; }
+    .hint, .tags { display: none; }
     .detail { left: var(--pad) !important; right: var(--pad); top: 76px !important; width: auto; }
   }
   @media (max-width: 560px) {
     .top .label, .top .chip-link { display: none; }
-    .district { padding: 7px 11px; gap: 5px; }
-    .op { padding: 7px 13px; }
+    .station { padding: 7px 11px; gap: 5px; }
+    .op { padding: 8px 13px; }
   }
-  @media (max-height: 640px) { .legend { display: none; } }
-  @media (prefers-reduced-motion: reduce) { .detail { transition: none; } }
+  @media (max-height: 640px) { .board .lede, .board .note { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .detail { transition: none; } .lane-row .bar i { transition: none; } }
 </style>
 </head>
 <body>
 
 <canvas id="scene" aria-hidden="true"></canvas>
+<div class="tags" id="tags" aria-hidden="true"><div class="tag lane" id="tagAuto"></div><div class="tag lane" id="tagMan"></div></div>
 
 <div class="top">
   <a class="mark" href="../" aria-label="Walder Reyes, inicio">
@@ -184,31 +200,45 @@
   </button>
 </div>
 
-<section class="legend" aria-labelledby="lg-h">
-  <h1 id="lg-h" data-i18n="lg.h">El sistema, corriendo</h1>
-  <p class="lede" data-i18n="lg.p">Cada distrito es un subsistema real. Los haces son integraciones, y las luces que los recorren, trabajo moviéndose entre ellos.</p>
-  <div class="key">
-    <div><i class="core"></i><span data-i18n="lg.k1">Núcleo: monolito modular</span></div>
-    <div><i></i><span data-i18n="lg.k2">Integración</span></div>
-    <div><i class="ext"></i><span data-i18n="lg.k3">Sistema externo</span></div>
+<section class="board" aria-labelledby="bd-h">
+  <h1 id="bd-h" data-i18n="bd.h">El mismo trabajo, dos veces</h1>
+  <p class="lede" data-i18n="bd.p">Cada pago recorre las mismas cuatro estaciones. Arriba lo hace un sistema; abajo, personas.</p>
+
+  <div class="lane-row auto">
+    <div class="hd">
+      <span class="nm"><i></i><span data-i18n="bd.auto">Automatizado</span></span>
+      <span class="done" id="doneAuto" aria-live="polite">0</span>
+    </div>
+    <div class="q"><span data-i18n="bd.q">En cola</span> <b id="qAuto">0</b> <span class="bar"><i id="barAuto"></i></span></div>
   </div>
+
+  <div class="lane-row manual">
+    <div class="hd">
+      <span class="nm"><i></i><span data-i18n="bd.manual">Manual</span></span>
+      <span class="done" id="doneManual" aria-live="off">0</span>
+    </div>
+    <div class="q"><span data-i18n="bd.q">En cola</span> <b id="qManual">0</b> <span class="bar"><i id="barManual"></i></span></div>
+  </div>
+
+  <p class="note" data-i18n="bd.note">Ninguna estación es más rápida por arte de magia: el carril automatizado atiende varios pagos a la vez, el manual tiene una persona por estación.</p>
 </section>
 
 <article class="detail" id="detail" role="region" aria-live="polite" hidden>
-  <button type="button" class="x" id="detailX" aria-label="Volver a la vista general">✕</button>
+  <button type="button" class="x" id="detailX" aria-label="Cerrar">✕</button>
   <p class="label kicker" id="detailKicker"></p>
   <h2 id="detailTitle"></h2>
   <p id="detailDesc"></p>
   <div class="chips" id="detailChips"></div>
-  <p class="wires" id="detailWires"></p>
   <a class="go" id="detailGo" href="../"><span id="detailCta"></span> <span aria-hidden="true">→</span></a>
 </article>
 
-<p class="label hint" data-i18n="lab.hint">Haz clic en un distrito para entrar · Esc vuelve a la vista general</p>
+<p class="label hint" data-i18n="lab.hint">Haz clic en una estación para ver qué hace</p>
 
 <div class="console">
-  <div class="districts" id="districts" role="group" aria-label="Subsistemas"></div>
-  <button type="button" class="op" id="reset" data-i18n="op.reset" disabled>Vista general</button>
+  <button type="button" class="op primary" id="one" data-i18n="op.one">Recibe un pago</button>
+  <button type="button" class="op" id="burst" data-i18n="op.burst">Recibe 20</button>
+  <button type="button" class="op" id="reset" data-i18n="op.reset">Reiniciar</button>
+  <div class="stations" id="stations" role="group" aria-label="Estaciones"></div>
 </div>
 
 <div class="fallback">
@@ -229,74 +259,51 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
 <script>
 /* ---------------------------------------------------------------------------
-   Ecosistema — the architecture, running. The glass monolith at the centre is
-   the modular monolith; the districts around it are the subsystems; the beams
-   between them are integrations. Fly over it, enter a district, read what it
-   solves. Every claim below comes from the portfolio's own copy.
+   Ecosistema — one payment crossing the system, twice.
+
+   Both lanes run the same four stations with the same per-station work. The
+   only difference is the one that matters: the automated lane serves several
+   payments at once, the manual lane has one person per station. Send one and
+   they keep pace; send twenty and the queue does the arguing. No invented
+   numbers — the asymmetry falls out of the model.
 --------------------------------------------------------------------------- */
 
-/* id -> where it stands, what it wires to. `ext` marks an outside system. */
-const CORE = "core";
-const NODES = [
-  { id: CORE, at: [0, 2.35, 0], href: "../#trabajo", tower: null,
-    es: { k: "Núcleo", t: "Portal corporativo", d: "Un monolito modular: muchas iniciativas conviviendo en un solo portal, sin pisarse.",
-          c: ["Modular Monolith", "Buenas prácticas"], cta: "Ver el caso" },
-    en: { k: "Core", t: "Corporate portal", d: "A modular monolith: many initiatives living in one portal without stepping on each other.",
-          c: ["Modular Monolith", "Best practices"], cta: "See the case" } },
-  { id: "pos", at: [-13.5, 0, 6.5], href: "../#dwald", tower: 7.5,
-    es: { k: "Producto DWALD", t: "DWALD POS", d: "Ventas, inventario y reportes para el negocio que atiende al público.",
-          c: ["Ventas", "Inventario", "Reportes"], cta: "Conocer DWALD" },
-    en: { k: "DWALD product", t: "DWALD POS", d: "Sales, inventory and reports for the business that serves the public.",
-          c: ["Sales", "Inventory", "Reports"], cta: "Explore DWALD" } },
-  { id: "loan", at: [13.0, 0, 5.5], href: "../#dwald", tower: 8.5,
-    es: { k: "Producto DWALD", t: "DWALD Loan", d: "Préstamos y clientes, construido sobre .NET.",
-          c: ["Préstamos", "Clientes", ".NET"], cta: "Conocer DWALD" },
-    en: { k: "DWALD product", t: "DWALD Loan", d: "Loans and customers, built on .NET.",
-          c: ["Loans", "Customers", ".NET"], cta: "Explore DWALD" } },
-  { id: "ia", at: [-11.5, 0, -12.5], href: "../#trabajo", tower: 9.5,
-    es: { k: "Caso", t: "IA documental", d: "Del PDF a datos que operan solos: IA integrada al flujo completo del proceso.",
-          c: ["Azure AI", "Documentos", "Procesos"], cta: "Ver el caso" },
-    en: { k: "Case", t: "Document AI", d: "From PDF to data that runs itself: AI wired into the whole process flow.",
-          c: ["Azure AI", "Documents", "Processes"], cta: "See the case" } },
-  { id: "o2c", at: [12.0, 0, -11.5], href: "../#trabajo", tower: 10.5,
-    es: { k: "Caso", t: "Order-to-Cash", d: "Motor de identificación de pagos integrado con banco y ERP. Conciliar deja de ser manual.",
-          c: ["Pagos", "Banco", "ERP"], cta: "Ver el caso" },
-    en: { k: "Case", t: "Order-to-Cash", d: "A payment identification engine wired into the bank and the ERP. Reconciliation stops being manual.",
-          c: ["Payments", "Bank", "ERP"], cta: "See the case" } },
-];
-
-/* Outside systems the work plugs into. Labels only — they are not mine. */
-const EXTERNAL = [
-  { id: "banco", at: [21, 0, -19], es: "Banco", en: "Bank" },
-  { id: "erp",   at: [3, 0, -23],  es: "ERP",   en: "ERP" },
-  { id: "azure", at: [-20, 0, -21], es: "Azure AI", en: "Azure AI" },
-];
-
-/* Every wire the portfolio's own copy supports. */
-const WIRES = [
-  [CORE, "pos"], [CORE, "loan"], [CORE, "ia"], [CORE, "o2c"],
-  ["o2c", "banco"], ["o2c", "erp"], ["ia", "azure"], ["ia", "o2c"],
+const STATIONS = [
+  { id: "entrada", x: -15, href: "../#trabajo",
+    es: { k: "Entrada", t: "Llega un pago", d: "Un comprobante entra al proceso. En papel o en PDF, da lo mismo: a partir de aquí hay trabajo que hacer.", c: ["Documento"], cta: "Ver el trabajo" },
+    en: { k: "Intake", t: "A payment arrives", d: "A receipt enters the process. On paper or as a PDF, it makes no difference: from here on there is work to do.", c: ["Document"], cta: "See the work" } },
+  { id: "ia", x: -5, href: "../#trabajo",
+    es: { k: "Caso", t: "IA documental", d: "Del PDF a datos que operan solos. La IA extrae la información sin que nadie transcriba nada.", c: ["Azure AI", "Documentos"], cta: "Ver el caso" },
+    en: { k: "Case", t: "Document AI", d: "From PDF to data that runs itself. AI pulls the information out without anyone retyping it.", c: ["Azure AI", "Documents"], cta: "See the case" } },
+  { id: "o2c", x: 5, href: "../#trabajo",
+    es: { k: "Caso", t: "Order-to-Cash", d: "El motor identifica el pago y lo cruza con el banco y el ERP. Conciliar deja de ser manual.", c: ["Pagos", "Banco", "ERP"], cta: "Ver el caso" },
+    en: { k: "Case", t: "Order-to-Cash", d: "The engine identifies the payment and matches it against the bank and the ERP. Reconciliation stops being manual.", c: ["Payments", "Bank", "ERP"], cta: "See the case" } },
+  { id: "salida", x: 15, href: "../#dwald",
+    es: { k: "Salida", t: "Conciliado", d: "El pago queda aplicado. En el carril de arriba, sin que nadie haya tenido que tocarlo.", c: ["Operación"], cta: "Conocer DWALD" },
+    en: { k: "Output", t: "Reconciled", d: "The payment is applied. In the top lane, without anyone having had to touch it.", c: ["Operations"], cta: "Explore DWALD" } },
 ];
 
 const UI = {
   es: {
     "lab.tag": "Laboratorio · Ecosistema", "lab.col": "Colapso ↗",
-    "lab.hint": "Haz clic en un distrito para entrar · Esc vuelve a la vista general",
-    "lg.h": "El sistema, corriendo",
-    "lg.p": "Cada distrito es un subsistema real. Los haces son integraciones, y las luces que los recorren, trabajo moviéndose entre ellos.",
-    "lg.k1": "Núcleo: monolito modular", "lg.k2": "Integración", "lg.k3": "Sistema externo",
-    "op.reset": "Vista general", "close": "Volver a la vista general", "wires": "Conecta con",
+    "lab.hint": "Haz clic en una estación para ver qué hace",
+    "bd.h": "El mismo trabajo, dos veces",
+    "bd.p": "Cada pago recorre las mismas cuatro estaciones. Arriba lo hace un sistema; abajo, personas.",
+    "bd.auto": "Automatizado", "bd.manual": "Manual", "bd.q": "En cola",
+    "bd.note": "Ninguna estación es más rápida por arte de magia: el carril automatizado atiende varios pagos a la vez, el manual tiene una persona por estación.",
+    "op.one": "Recibe un pago", "op.burst": "Recibe 20", "op.reset": "Reiniciar", "close": "Cerrar",
     "fb.k": "Sin WebGL", "fb.h": "Esta pieza necesita WebGL",
     "fb.p": "Tu navegador no pudo iniciar la escena 3D. El resto del portafolio funciona igual.",
     "fb.b": "Volver al portafolio",
   },
   en: {
     "lab.tag": "Lab · Ecosystem", "lab.col": "Collapse ↗",
-    "lab.hint": "Click a district to enter · Esc returns to the overview",
-    "lg.h": "The system, running",
-    "lg.p": "Each district is a real subsystem. The beams are integrations, and the lights running along them are work moving between them.",
-    "lg.k1": "Core: modular monolith", "lg.k2": "Integration", "lg.k3": "External system",
-    "op.reset": "Overview", "close": "Back to the overview", "wires": "Wired to",
+    "lab.hint": "Click a station to see what it does",
+    "bd.h": "The same work, twice",
+    "bd.p": "Every payment runs the same four stations. Up top a system does it; below, people do.",
+    "bd.auto": "Automated", "bd.manual": "Manual", "bd.q": "Queued",
+    "bd.note": "No station is magically faster: the automated lane serves several payments at once, the manual one has one person per station.",
+    "op.one": "Receive a payment", "op.burst": "Receive 20", "op.reset": "Reset", "close": "Close",
     "fb.k": "No WebGL", "fb.h": "This piece needs WebGL",
     "fb.p": "Your browser could not start the 3D scene. The rest of the portfolio works fine.",
     "fb.b": "Back to the portfolio",
@@ -304,14 +311,8 @@ const UI = {
 };
 
 let lang = "es";
-const tr = (k) => (UI[lang] && UI[lang][k]) || UI.es[k] || k;   /* not `t`: the scene uses that name for time */
-const copy = (i) => NODES[i][lang] || NODES[i].es;
-const labelOf = (id) => {
-  const n = NODES.find((x) => x.id === id);
-  if (n) return (n[lang] || n.es).t;
-  const e = EXTERNAL.find((x) => x.id === id);
-  return e ? (e[lang] || e.es) : id;
-};
+const tr = (k) => (UI[lang] && UI[lang][k]) || UI.es[k] || k;   /* not `t`: the scene uses that for time */
+const copy = (i) => STATIONS[i][lang] || STATIONS[i].es;
 
 /* ---------- Theme ---------- */
 (function () {
@@ -325,27 +326,36 @@ const labelOf = (id) => {
   });
 })();
 
-/* ---------- District chips ---------- */
-const districtsEl = document.getElementById("districts");
-NODES.forEach((n, i) => {
+/* ---------- Station chips and projected tags ---------- */
+const stationsEl = document.getElementById("stations");
+const tagsEl = document.getElementById("tags");
+STATIONS.forEach((s, i) => {
   const b = document.createElement("button");
-  b.type = "button"; b.className = "district"; b.dataset.i = i; b.setAttribute("aria-pressed", "false");
-  b.innerHTML = '<span class="k"></span><span class="nm"></span>';
-  districtsEl.appendChild(b);
+  b.type = "button"; b.className = "station"; b.dataset.i = i; b.setAttribute("aria-pressed", "false");
+  b.innerHTML = '<span class="k">' + (i + 1) + '</span><span class="nm"></span>';
+  stationsEl.appendChild(b);
+  const tag = document.createElement("div");
+  tag.className = "tag"; tag.dataset.i = i;
+  tagsEl.appendChild(tag);
 });
-const chipEls = [...districtsEl.querySelectorAll(".district")];
+const chipEls = [...stationsEl.querySelectorAll(".station")];
+const tagEls = [...tagsEl.querySelectorAll(".tag[data-i]")];
+const laneTags = [document.getElementById("tagAuto"), document.getElementById("tagMan")];
+laneTags[0].classList.add("auto");
 
 /* ---------- Language ---------- */
 function setLang(next) {
   lang = next;
   document.documentElement.lang = next;
   document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = tr(el.dataset.i18n); });
-  NODES.forEach((n, i) => {
+  STATIONS.forEach((s, i) => {
     const c = copy(i);
-    chipEls[i].querySelector(".k").textContent = n.id === CORE ? "◇" : "·";
     chipEls[i].querySelector(".nm").textContent = c.t;
     chipEls[i].setAttribute("aria-label", c.t + " — " + c.d);
+    tagEls[i].textContent = c.t;
   });
+  laneTags[0].textContent = tr("bd.auto");
+  laneTags[1].textContent = tr("bd.manual");
   document.getElementById("detailX").setAttribute("aria-label", tr("close"));
   document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === next)));
   if (opened >= 0) fillDetail(opened);
@@ -356,22 +366,17 @@ document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("cli
 /* ---------- Detail panel ---------- */
 const detail = document.getElementById("detail");
 function fillDetail(i) {
-  const n = NODES[i], c = copy(i);
+  const c = copy(i);
   document.getElementById("detailKicker").textContent = c.k;
   document.getElementById("detailTitle").textContent = c.t;
   document.getElementById("detailDesc").textContent = c.d;
   const chips = document.getElementById("detailChips");
   chips.innerHTML = "";
   c.c.forEach((x) => { const s = document.createElement("span"); s.textContent = x; chips.appendChild(s); });
-  const linked = WIRES.filter((w) => w.indexOf(n.id) >= 0)
-                      .map((w) => labelOf(w[0] === n.id ? w[1] : w[0]));
-  document.getElementById("detailWires").innerHTML =
-    linked.length ? tr("wires") + " " + linked.map((x) => "<b>" + x + "</b>").join(" · ") : "";
   document.getElementById("detailCta").textContent = c.cta;
-  document.getElementById("detailGo").href = n.href;
+  document.getElementById("detailGo").href = STATIONS[i].href;
 }
 
-/* ---------- Open / close, shared with the scene ---------- */
 let opened = -1;
 const listeners = [];
 const onOpen = (fn) => listeners.push(fn);
@@ -380,35 +385,31 @@ function open(i, viaKeyboard) {
   if (i === opened) return;
   opened = i;
   chipEls.forEach((el, k) => el.setAttribute("aria-pressed", String(k === i)));
-  document.getElementById("reset").disabled = false;
+  tagEls.forEach((el, k) => el.classList.toggle("on", k === i));
   fillDetail(i);
   detail.hidden = false;
   requestAnimationFrame(() => detail.classList.add("show"));
   if (viaKeyboard) document.getElementById("detailGo").focus({ preventScroll: true });
   listeners.forEach((fn) => fn(i));
 }
-
 function close() {
   if (opened < 0) return;
   const was = opened;
   opened = -1;
   chipEls.forEach((el) => el.setAttribute("aria-pressed", "false"));
-  document.getElementById("reset").disabled = true;
+  tagEls.forEach((el) => el.classList.remove("on"));
   detail.classList.remove("show");
   setTimeout(() => { if (opened < 0) detail.hidden = true; }, 320);
   if (document.activeElement && detail.contains(document.activeElement)) chipEls[was].focus({ preventScroll: true });
   listeners.forEach((fn) => fn(-1));
 }
-
 chipEls.forEach((el) => el.addEventListener("click", (e) => {
   const i = +el.dataset.i;
   i === opened ? close() : open(i, e.detail === 0);
 }));
 document.getElementById("detailX").addEventListener("click", close);
-document.getElementById("reset").addEventListener("click", close);
 addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
-/* The console wraps differently per language and width, so measure it. */
 (function () {
   const el = document.querySelector(".console");
   const publish = () => document.documentElement.style.setProperty("--console-h", el.offsetHeight + "px");
@@ -429,13 +430,13 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color();
-  scene.fog = new THREE.FogExp2(0x0f3346, 0.011);
-  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 300);
+  scene.fog = new THREE.FogExp2(0x0f3346, 0.010);
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 400);
   const world = new THREE.Group(); scene.add(world);
   let ready = false;
 
-  const hemi = new THREE.HemisphereLight(0x3b6b84, 0x0f3346, .9); scene.add(hemi);
-  const key = new THREE.DirectionalLight(0xbfd9e4, 1.1); key.position.set(-8, 14, 10); scene.add(key);
+  const hemi = new THREE.HemisphereLight(0x3b6b84, 0x0f3346, .95); scene.add(hemi);
+  const key = new THREE.DirectionalLight(0xbfd9e4, 1.05); key.position.set(-6, 16, 12); scene.add(key);
 
   const spr = document.createElement("canvas"); spr.width = spr.height = 64;
   const sx = spr.getContext("2d"), sgr = sx.createRadialGradient(32, 32, 0, 32, 32, 32);
@@ -449,184 +450,207 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
     const m = new THREE.Sprite(mat); m.scale.set(s, s, 1); return m;
   };
 
-  /* ---- The city: ordinary software, the backdrop the districts stand out from ---- */
-  const win = document.createElement("canvas"); win.width = 64; win.height = 128;
-  const wx = win.getContext("2d"); wx.fillStyle = "#000"; wx.fillRect(0, 0, 64, 128);
-  for (let y = 4; y < 124; y += 8) for (let x = 4; x < 60; x += 8) {
-    const r = Math.random();
-    if (r < .28) { wx.fillStyle = r < .06 ? "#EAF3F6" : r < .18 ? "#9FC4D2" : "#3D6F88"; wx.fillRect(x, y, 4, 3); }
-  }
-  const winTex = new THREE.CanvasTexture(win);
-  const bMat = new THREE.MeshStandardMaterial({ roughness: .6, metalness: .55, emissive: 0xffffff, emissiveMap: winTex, emissiveIntensity: .85 });
-  const COUNT = 300, city = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), bMat, COUNT);
+  const Z_AUTO = -4.2, Z_MAN = 4.2;
+
+  /* ---- A distant skyline: this runs inside a real business, not in a void ---- */
+  const winC = document.createElement("canvas"); winC.width = 64; winC.height = 128;
+  const wx = winC.getContext("2d"); wx.fillStyle = "#000"; wx.fillRect(0, 0, 64, 128);
+  for (let y = 4; y < 124; y += 8) for (let x = 4; x < 60; x += 8)
+    if (Math.random() < .22) { wx.fillStyle = Math.random() < .25 ? "#EAF3F6" : "#6D97A8"; wx.fillRect(x, y, 4, 3); }
+  const bMat = new THREE.MeshStandardMaterial({ roughness: .7, metalness: .4, emissive: 0xffffff,
+                                                emissiveMap: new THREE.CanvasTexture(winC), emissiveIntensity: .4 });
+  const CITY = 190, city = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), bMat, CITY);
   const m4 = new THREE.Matrix4(), qt = new THREE.Quaternion(), p3 = new THREE.Vector3(), scl = new THREE.Vector3();
   let placed = 0, guard = 0;
-  while (placed < COUNT && guard++ < 6000) {
-    const a = Math.random() * Math.PI * 2, r = 9.5 + Math.pow(Math.random(), .7) * 30;
+  while (placed < CITY && guard++ < 4000) {
+    const a = Math.random() * Math.PI * 2, r = 34 + Math.pow(Math.random(), .6) * 46;
     const x = Math.cos(a) * r, z = Math.sin(a) * r;
-    /* Leave a plaza around the core, and room around every district. */
-    if (Math.hypot(x, z) < 9.5) continue;
-    if (NODES.some((n) => n.tower && Math.hypot(x - n.at[0], z - n.at[2]) < 5)) continue;
-    if (EXTERNAL.some((e) => Math.hypot(x - e.at[0], z - e.at[2]) < 4)) continue;
-    const w = .8 + Math.random() * 1.7, d = .8 + Math.random() * 1.7, h = 1.6 + Math.pow(Math.random(), 2.2) * (r < 16 ? 7 : 13);
-    p3.set(x, h / 2 - .25, z); scl.set(w, h, d); m4.compose(p3, qt, scl); city.setMatrixAt(placed++, m4);
+    if (z > 12 && Math.abs(x) < 30) continue;                 /* keep the near side of the lanes open */
+    const w = 1.4 + Math.random() * 2.4, d = 1.4 + Math.random() * 2.4, h = 3 + Math.pow(Math.random(), 1.8) * 20;
+    p3.set(x, h / 2 - .3, z); scl.set(w, h, d); m4.compose(p3, qt, scl); city.setMatrixAt(placed++, m4);
   }
   city.count = placed; world.add(city);
 
-  const grid = new THREE.GridHelper(140, 140, 0xffffff, 0xffffff);
-  grid.material.transparent = true; grid.material.opacity = .2; grid.position.y = -.25; world.add(grid);
+  const grid = new THREE.GridHelper(150, 60, 0xffffff, 0xffffff);
+  grid.material.transparent = true; grid.material.opacity = .16; grid.position.y = -.3; world.add(grid);
 
-  /* ---- Platform under the core ---- */
-  const platMat = new THREE.MeshStandardMaterial({ metalness: .8, roughness: .35 });
-  world.add(new THREE.Mesh(new THREE.CylinderGeometry(5, 5.3, .5, 96), platMat));
-  const ringMats = [];
-  [[5.02, .26, .9], [4.2, .26, .55], [5.32, -.24, .3]].forEach(([r, y, o]) => {
-    const mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: o });
-    mat.userData = { o: o }; ringMats.push(mat);
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(r, .025, 8, 160), mat);
-    ring.rotation.x = Math.PI / 2; ring.position.y = y; world.add(ring);
-  });
+  /* ---- The two tracks ---- */
+  const trackMats = [];
+  function track(z, op) {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array([-18, 0, z, 18, 0, z]), 3));
+    const mat = new THREE.LineBasicMaterial({ transparent: true, opacity: op, depthWrite: false });
+    mat.userData = { o: op }; trackMats.push(mat);
+    world.add(new THREE.LineSegments(geo, mat));
+    return mat;
+  }
+  const tAutoMat = track(Z_AUTO, .5), tManMat = track(Z_MAN, .32);
 
-  /* ---- The glass monolith: the modular monolith itself ---- */
-  const mono = new THREE.Group(); mono.position.y = 2.35; world.add(mono);
-  const mGeo = new THREE.BoxGeometry(3, 3.9, .38);
-  const monoMat = new THREE.MeshStandardMaterial({ metalness: .2, roughness: .08, transparent: true, opacity: .3 });
-  mono.add(new THREE.Mesh(mGeo, monoMat));
-  const edgeMat = new THREE.LineBasicMaterial({ transparent: true, opacity: .9 });
-  mono.add(new THREE.LineSegments(new THREE.EdgesGeometry(mGeo), edgeMat));
-  const monoGlow = glow(.5, 7); mono.add(monoGlow);
-
-  /* |psi> emblem, drawn from the same paths as the site logo */
-  const em = document.createElement("canvas"); em.width = em.height = 512;
-  const ex = em.getContext("2d"); ex.scale(512 / 44, 512 / 44); ex.translate(0, 2);
-  ex.lineCap = "round"; ex.lineJoin = "round"; ex.strokeStyle = "#EAF3F6";
-  ex.lineWidth = 2.2; ex.stroke(new Path2D("M5 5v30")); ex.stroke(new Path2D("M33 5l7 15-7 15"));
-  ex.lineWidth = 1.4; ex.stroke(new Path2D("M28 20a9 9 0 1 1-18 0a9 9 0 1 1 18 0"));
-  ex.globalAlpha = .45; ex.lineWidth = 1; ex.beginPath(); ex.ellipse(19, 20, 9, 3.2, 0, 0, Math.PI * 2); ex.stroke(); ex.globalAlpha = 1;
-  ex.lineWidth = 1.5; ex.stroke(new Path2D("M19 20l5.6-6.6"));
-  ex.fillStyle = "#EAF3F6"; ex.beginPath(); ex.arc(25, 13, 2.4, 0, Math.PI * 2); ex.fill();
-  const emblemMat = new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(em), transparent: true, depthWrite: false });
-  const emblem = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 2.3), emblemMat);
-  emblem.position.set(0, .15, .21); mono.add(emblem);
-
-  const core3 = new THREE.Group(); core3.position.set(0, .15, -.02); mono.add(core3);
-  const orbMats = [];
-  const orbitals = [0, 1, 2].map((i) => {
-    const mat = new THREE.MeshBasicMaterial({ transparent: true, opacity: .55 });
-    mat.userData = { o: .55, alt: i === 1 }; orbMats.push(mat);
-    const o = new THREE.Mesh(new THREE.TorusGeometry(1.25, .012, 6, 120), mat);
-    o.rotation.set(Math.PI / 2 + i * .9, i * .6, 0); core3.add(o); return o;
-  });
-  const electrons = [0, 1, 2].map(() => { const g = glow(1, .35); core3.add(g); return g; });
-  core3.add(glow(.85, 1.4));
-
-  /* ---- Districts: a landmark tower plus a marker, one per subsystem ---- */
-  const byId = {};
+  /* ---- Stations: one gate per lane, plus a shared clickable pillar ---- */
+  const gateGeo = new THREE.BoxGeometry(2.6, 3.1, 2.6);
+  const padGeo = new THREE.BoxGeometry(3.4, .3, 3.4);
   const hits = [];
-  const districts = NODES.map((n, i) => {
-    const grp = new THREE.Group();
-    grp.position.set(n.at[0], 0, n.at[2]);
-    const d = { i: i, id: n.id, grp: grp, mats: [], top: n.at[1], w: 1, f: 0 };
-
-    if (n.tower) {
-      world.add(grp);
-      const h = n.tower;
-      const tGeo = new THREE.BoxGeometry(2.6, h, 2.6);
-      const body = new THREE.MeshStandardMaterial({ metalness: .5, roughness: .35, transparent: true, opacity: .82 });
-      const mesh = new THREE.Mesh(tGeo, body); mesh.position.y = h / 2 - .25; grp.add(mesh);
-      const edges = new THREE.LineBasicMaterial({ transparent: true, opacity: .85 });
-      const eMesh = new THREE.LineSegments(new THREE.EdgesGeometry(tGeo), edges); eMesh.position.y = h / 2 - .25; grp.add(eMesh);
-      const cap = glow(.9, 2.2); cap.position.y = h - .25; grp.add(cap);
-      const hit = new THREE.Mesh(new THREE.BoxGeometry(4.4, h + 2.4, 4.4), new THREE.MeshBasicMaterial({ visible: false }));
-      hit.position.y = h / 2 - .25; hit.userData.i = i; grp.add(hit); hits.push(hit);
-      d.mats = [body, edges]; d.glows = [cap.material]; d.top = h + .6; d.body = body; d.edges = edges;
-    } else {
-      /* The core has no tower: the monolith is its landmark. */
-      const hit = new THREE.Mesh(new THREE.BoxGeometry(5.2, 5.4, 3.2), new THREE.MeshBasicMaterial({ visible: false }));
-      hit.position.set(0, 2.35, 0); hit.userData.i = i; world.add(hit); hits.push(hit);
-      const cap = glow(.9, 3); cap.position.set(0, 5.1, 0); world.add(cap);
-      d.mats = [monoMat, edgeMat]; d.glows = [monoGlow.material, cap.material];
-      d.top = 5.6; d.body = monoMat; d.edges = edgeMat;
-    }
-    byId[n.id] = d;
-    return d;
+  const stations = STATIONS.map((s, i) => {
+    const st = { i: i, x: s.x, gates: [], pads: [], glows: [], busy: [0, 0], f: 0 };
+    [Z_AUTO, Z_MAN].forEach((z, lane) => {
+      const grp = new THREE.Group(); grp.position.set(s.x, 0, z); world.add(grp);
+      const padMat = new THREE.MeshStandardMaterial({ metalness: .6, roughness: .4, transparent: true, opacity: .9 });
+      const pad = new THREE.Mesh(padGeo, padMat); pad.position.y = -.15; grp.add(pad);
+      const edgeMat = new THREE.LineBasicMaterial({ transparent: true, opacity: lane === 0 ? .85 : .5 });
+      edgeMat.userData = { o: lane === 0 ? .85 : .5 };
+      const gate = new THREE.LineSegments(new THREE.EdgesGeometry(gateGeo), edgeMat);
+      gate.position.y = 1.45; grp.add(gate);
+      const g = glow(lane === 0 ? .7 : .4, 2.4); g.position.y = 1.5; grp.add(g);
+      st.gates.push(edgeMat); st.pads.push(padMat); st.glows.push(g.material);
+      const hit = new THREE.Mesh(new THREE.BoxGeometry(4.2, 4.4, 4.2), new THREE.MeshBasicMaterial({ visible: false }));
+      hit.position.set(s.x, 1.6, z); hit.userData.i = i; world.add(hit); hits.push(hit);
+    });
+    return st;
   });
 
-  /* ---- External systems: markers only, they are not mine to claim ---- */
-  const externals = EXTERNAL.map((e) => {
-    const g = glow(.55, 1.5); g.position.set(e.at[0], 1.4, e.at[2]); world.add(g);
-    return { id: e.id, pos: new THREE.Vector3(e.at[0], 1.4, e.at[2]), glow: g };
-  });
-  const posOf = (id) => {
-    const d = byId[id];
-    if (d) return new THREE.Vector3(d.grp.position.x, d.id === CORE ? 2.35 : Math.max(2, d.top * .55), d.grp.position.z);
-    const e = externals.find((x) => x.id === id);
-    return e ? e.pos.clone() : new THREE.Vector3();
-  };
-
-  /* ---- Integrations: one line per wire, vertex-coloured so a single one can light ---- */
-  const wirePos = new Float32Array(WIRES.length * 6), wireCol = new Float32Array(WIRES.length * 6);
-  const wireEnds = WIRES.map(([a, b]) => [posOf(a), posOf(b)]);
-  wireEnds.forEach(([a, b], i) => wirePos.set([a.x, a.y, a.z, b.x, b.y, b.z], i * 6));
-  const wGeo = new THREE.BufferGeometry();
-  wGeo.setAttribute("position", new THREE.BufferAttribute(wirePos, 3));
-  wGeo.setAttribute("color", new THREE.BufferAttribute(wireCol, 3));
-  const wMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: .4, depthWrite: false });
-  world.add(new THREE.LineSegments(wGeo, wMat));
-  /* Work in transit along each integration. */
-  const traffic = WIRES.map(() => { const g = glow(1, .34); world.add(g); return { g: g, t: Math.random() }; });
-
-  /* ---- Rising particles over the core ---- */
-  const PN = 360, pp = new Float32Array(PN * 3), ps = [];
-  for (let i = 0; i < PN; i++) ps.push({ a: Math.random() * 6.28, r: 1 + Math.random() * 6, y: Math.random() * 9, v: .006 + Math.random() * .018 });
-  const pGeo = new THREE.BufferGeometry(); pGeo.setAttribute("position", new THREE.BufferAttribute(pp, 3));
-  const dustMat = new THREE.PointsMaterial({ size: .07, map: sprite, transparent: true, opacity: .7, depthWrite: false });
-  world.add(new THREE.Points(pGeo, dustMat));
-
-  let composer = null, bloom = null;
-  if (THREE.EffectComposer && THREE.UnrealBloomPass) {
-    composer = new THREE.EffectComposer(renderer);
-    composer.addPass(new THREE.RenderPass(scene, camera));
-    bloom = new THREE.UnrealBloomPass(new THREE.Vector2(1, 1), .55, .5, .3);
-    composer.addPass(bloom);
+  /* ---- Payments in flight: one pooled mesh per slot ---- */
+  const MAX = 160;
+  const itemGeo = new THREE.BoxGeometry(.52, .34, .68);
+  const itemMats = [
+    new THREE.MeshStandardMaterial({ metalness: .3, roughness: .45, transparent: true, opacity: .95 }),
+    new THREE.MeshStandardMaterial({ metalness: .3, roughness: .45, transparent: true, opacity: .95 }),
+    new THREE.MeshStandardMaterial({ metalness: .3, roughness: .45, transparent: true, opacity: .95 }), /* being worked on */
+  ];
+  const pool = [];
+  for (let i = 0; i < MAX; i++) {
+    const m = new THREE.Mesh(itemGeo, itemMats[0]); m.visible = false; world.add(m); pool.push(m);
   }
 
-  /* ---- Theme. Dark: the system at night. Light: a blueprint. ---- */
+  /* ---- The simulation ----------------------------------------------------
+     Both lanes: same stations, same work per station. The automated lane has
+     unlimited servers; the manual lane has exactly one person per station. */
+  const WORK_AUTO = .40, WORK_MAN = 2.6, SPEED = 7.5;
+  const lanes = [
+    { auto: true,  z: Z_AUTO, items: [], done: 0, servers: STATIONS.map(() => 0) },
+    { auto: false, z: Z_MAN,  items: [], done: 0, servers: STATIONS.map(() => 0) },
+  ];
+  let liveItems = 0;
+
+  function emit(n) {
+    for (let k = 0; k < n; k++) {
+      if (liveItems + 2 > MAX) break;
+      lanes.forEach((L) => {
+        L.items.push({ st: 0, phase: "move", p: 0, x: STATIONS[0].x - 3.2, stack: 0 });
+      });
+      liveItems += 2;
+    }
+    /* With reduced motion there is no loop to advance the simulation, so the
+       journey would never happen and the button would appear dead. Jump to the
+       moment that carries the argument instead: the automated lane drained,
+       the manual one still queued. */
+    if (reduce) {
+      let guard = 0;
+      while (lanes[0].items.length > 0 && guard++ < 6000) step(1 / 30);
+      paint();
+    }
+    if (reduce && ready) frame(0);
+  }
+
+  function reset() {
+    lanes.forEach((L) => { L.items.length = 0; L.done = 0; L.servers = STATIONS.map(() => 0); });
+    liveItems = 0;
+    pool.forEach((m) => { m.visible = false; });
+    paint();
+    if (reduce && ready) frame(0);
+  }
+
+  function step(dt) {
+    lanes.forEach((L) => {
+      const work = L.auto ? WORK_AUTO : WORK_MAN;
+      /* Free every server whose job finished, oldest first. */
+      for (let i = L.items.length - 1; i >= 0; i--) {
+        const it = L.items[i];
+        if (it.phase === "move") {
+          const target = STATIONS[it.st].x;
+          it.x += SPEED * dt;
+          if (it.x >= target) {
+            it.x = target;
+            it.phase = "queue";
+          }
+        } else if (it.phase === "queue") {
+          /* The automated lane never waits for a free server; the manual one does. */
+          if (L.auto || L.servers[it.st] === 0) {
+            L.servers[it.st]++;
+            it.phase = "work"; it.p = 0;
+          }
+        } else if (it.phase === "work") {
+          it.p += dt;
+          if (it.p >= work) {
+            L.servers[it.st]--;
+            if (it.st === STATIONS.length - 1) {
+              L.done++; L.items.splice(i, 1); liveItems--;
+            } else {
+              it.st++; it.phase = "move";
+            }
+          }
+        }
+      }
+      /* Stack whatever is waiting, so a queue is something you can see. */
+      const waiting = {};
+      L.items.forEach((it) => {
+        if (it.phase === "queue") { waiting[it.st] = (waiting[it.st] || 0) + 1; it.stack = waiting[it.st] - 1; }
+        else it.stack = 0;
+      });
+    });
+  }
+
+  const queued = (L) => L.items.filter((it) => it.phase === "queue").length;
+
+  /* ---- Scoreboard ---- */
+  const el = {
+    doneA: document.getElementById("doneAuto"), doneM: document.getElementById("doneManual"),
+    qA: document.getElementById("qAuto"), qM: document.getElementById("qManual"),
+    barA: document.getElementById("barAuto"), barM: document.getElementById("barManual"),
+  };
+  function paint() {
+    const qa = queued(lanes[0]), qm = queued(lanes[1]);
+    const top = Math.max(1, qa, qm, 8);
+    el.doneA.textContent = lanes[0].done; el.doneM.textContent = lanes[1].done;
+    el.qA.textContent = qa; el.qM.textContent = qm;
+    el.barA.style.width = (qa / top * 100).toFixed(1) + "%";
+    el.barM.style.width = (qm / top * 100).toFixed(1) + "%";
+  }
+
+  document.getElementById("one").addEventListener("click", () => emit(1));
+  document.getElementById("burst").addEventListener("click", () => emit(20));
+  document.getElementById("reset").addEventListener("click", reset);
+
+  /* ---- Theme ---- */
   let dark = true, glowF = 1;
-  const cEm = new THREE.Color(), cHi = new THREE.Color(), cAm = new THREE.Color(), cEdge = new THREE.Color(), tc = new THREE.Color();
+  const cEm = new THREE.Color(), cAm = new THREE.Color(), cFaint = new THREE.Color(), cEdge = new THREE.Color(), tc = new THREE.Color();
   function applyTheme() {
     const s = getComputedStyle(document.documentElement);
     const v = (n) => s.getPropertyValue(n).trim();
     dark = v("--scene-mode") !== "light";
-    glowF = dark ? 1 : .22;
+    glowF = dark ? 1 : .2;
     scene.background.set(v("--void")); scene.fog.color.set(v("--void"));
-    cEm.set(v("--emerald")); cHi.set(v("--mint")); cAm.set(v("--amber"));
+    cEm.set(v("--emerald")); cAm.set(v("--amber")); cFaint.set(v("--faint"));
     cEdge.set(dark ? v("--emerald") : v("--text"));
     const blend = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
-    [wMat, dustMat, emblemMat].concat(glowMats).forEach((m) => { m.blending = blend; m.needsUpdate = true; });
-    glowMats.forEach((m) => { m.color.copy(cEm); m.opacity = m.userData.o * glowF; });
+    [tAutoMat, tManMat].concat(glowMats).forEach((m) => { m.blending = blend; m.needsUpdate = true; });
+    glowMats.forEach((m) => { m.opacity = m.userData.o * glowF; });
 
-    hemi.color.set(dark ? 0x3b6b84 : 0xdfe9ee); hemi.intensity = dark ? .9 : 1.15;
-    key.color.set(dark ? 0xbfd9e4 : 0xffffff); key.intensity = dark ? 1.1 : 1.35;
+    hemi.color.set(dark ? 0x3b6b84 : 0xdfe9ee); hemi.intensity = dark ? .95 : 1.2;
+    key.color.set(dark ? 0xbfd9e4 : 0xffffff); key.intensity = dark ? 1.05 : 1.3;
 
-    bMat.color.set(dark ? 0x10384c : 0xdbe7ec);
-    bMat.emissiveIntensity = dark ? .5 : .05;
-    platMat.color.set(dark ? 0x0d3044 : 0xcfdde3); platMat.emissive.set(dark ? 0x061b28 : 0x000000);
-    ringMats.forEach((m) => { m.color.copy(cEm); m.opacity = m.userData.o * (dark ? 1 : .8); });
-    monoMat.color.set(dark ? 0x17455c : 0x3E6576); monoMat.opacity = dark ? .3 : .62;
-    orbMats.forEach((m) => { m.color.copy(cEm); m.opacity = m.userData.o * (dark ? 1 : .75); });
-    emblemMat.color.copy(dark ? cHi : cEm);
-    grid.material.color.copy(new THREE.Color(v("--grid")));
-    grid.material.opacity = dark ? .2 : .42;
-    wMat.opacity = dark ? .4 : .62;
-    dustMat.color.copy(cEm); dustMat.opacity = dark ? .7 : .35;
+    bMat.color.set(dark ? 0x0e3346 : 0xdde8ed); bMat.emissiveIntensity = dark ? .4 : .04;
+    grid.material.color.set(v("--grid")); grid.material.opacity = dark ? .16 : .34;
+    tAutoMat.color.copy(cEm); tManMat.color.copy(cFaint);
 
-    districts.forEach((d) => {
-      /* Light mode: the districts read against a pale model city by being the
-         only saturated things in it. */
-      if (d.body !== monoMat) { d.body.color.set(dark ? 0x1a4e66 : 0x3E6576); }
-      d.edges.color.copy(cEdge);
+    stations.forEach((st) => {
+      st.pads[0].color.set(dark ? 0x15455c : 0x9db8c4);
+      st.pads[1].color.set(dark ? 0x10384a : 0xc4d4db);
+      st.gates.forEach((g) => g.color.copy(cEdge));
     });
+    /* Automated payments carry the accent; manual ones stay muted; work is amber. */
+    itemMats[0].color.copy(cEm);
+    itemMats[1].color.copy(cFaint);
+    itemMats[2].color.copy(cAm);
     if (reduce && ready) frame(0);
   }
   new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
@@ -634,15 +658,17 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
   /* ---- Pointer ---- */
   let mx = 0, my = 0, t = 0, W = 1, H = 1;
-  let ndcX = 0, ndcY = 0, hover = -1, downAt = null;
+  let ndcX = 0, ndcY = 0, hover = -1, downAt = null, overCanvas = false;
   addEventListener("pointermove", (e) => {
     mx = (e.clientX / innerWidth) * 2 - 1; my = (e.clientY / innerHeight) * 2 - 1;
     ndcX = mx; ndcY = -my;
+    overCanvas = (e.target === canvas);
     pick();
     if (reduce && ready) frame(0);
   });
   canvas.addEventListener("pointerdown", (e) => {
     ndcX = (e.clientX / innerWidth) * 2 - 1; ndcY = -((e.clientY / innerHeight) * 2 - 1);
+    overCanvas = true;
     pick();
     downAt = { x: e.clientX, y: e.clientY, i: hover };
   });
@@ -659,7 +685,7 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
     ndc.set(ndcX, ndcY);
     ray.setFromCamera(ndc, camera);
     const list = ray.intersectObjects(hits, false);
-    hover = list.length ? list[0].object.userData.i : -1;
+    hover = (overCanvas && list.length) ? list[0].object.userData.i : -1;
     canvas.classList.toggle("over", hover >= 0);
   }
 
@@ -668,100 +694,122 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
     renderer.setSize(W, H, false);
     if (composer) { composer.setSize(W, H); bloom.resolution.set(W, H); }
     camera.aspect = W / H; camera.updateProjectionMatrix();
+    world.position.x = W > 900 ? 6 : 0;   /* clear the scoreboard */
     if (reduce && ready) frame(0);
   }
-  addEventListener("resize", layout); layout();
 
+  let composer = null, bloom = null;
+  if (THREE.EffectComposer && THREE.UnrealBloomPass) {
+    composer = new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene, camera));
+    bloom = new THREE.UnrealBloomPass(new THREE.Vector2(1, 1), .5, .5, .3);
+    composer.addPass(bloom);
+  }
+  addEventListener("resize", layout); layout();
   onOpen(() => { if (reduce && ready) frame(0); });
 
   /* ---- Frame ---- */
   const free = new THREE.Vector3(), freeAt = new THREE.Vector3();
   const camPos = new THREE.Vector3(), camAt = new THREE.Vector3(), lookAt = new THREE.Vector3();
-  const tmp = new THREE.Vector3(), nodeP = new THREE.Vector3();
-  let camF = 0, camNode = null;
+  const tmp = new THREE.Vector3();
+  let camF = 0, camNode = null, hudAt = 0;
   const ease = (cur, to, dt, k) => (reduce ? to : cur + (to - cur) * Math.min(1, dt * k));
 
   function frame(dt) {
     t += dt;
+    step(dt);
 
-    mono.position.y = 2.35 + Math.sin(t * 1.1) * .06;
-    orbitals.forEach((o, i) => { o.rotation.z += dt * (.6 + i * .25); });
-    electrons.forEach((e, i) => {
-      const a = t * (1.6 + i * .5) + i * 2.1;
-      tmp.set(Math.cos(a) * 1.25, Math.sin(a) * 1.25, 0).applyEuler(orbitals[i].rotation);
-      e.position.copy(tmp);
+    /* Place every payment, and light the gates that are busy. */
+    let slot = 0;
+    stations.forEach((st) => { st.busy[0] = 0; st.busy[1] = 0; });
+    lanes.forEach((L, laneIdx) => {
+      L.items.forEach((it) => {
+        if (slot >= MAX) return;
+        const m = pool[slot++];
+        m.visible = true;
+        const sx2 = STATIONS[it.st].x;
+        if (it.phase === "move") {
+          m.position.set(it.x, .35, L.z);
+          m.material = itemMats[laneIdx];
+          m.rotation.y = 0;
+        } else if (it.phase === "queue") {
+          /* Queues pile up behind the station, which is the whole point — but
+             as a wall, so twenty waiting payments stay inside the frame. */
+          const col = it.stack % 4, row = Math.floor(it.stack / 4);
+          m.position.set(sx2 - 2.2 - col * .78, .35 + row * .42, L.z);
+          m.material = itemMats[laneIdx];
+          m.rotation.y = 0;
+        } else {
+          stations[it.st].busy[laneIdx] = 1;
+          m.position.set(sx2, .95 + Math.sin(t * 6) * .06, L.z);
+          m.material = itemMats[2];
+          m.rotation.y = t * 2.2;
+        }
+      });
     });
+    for (let i = slot; i < MAX; i++) pool[i].visible = false;
 
-    /* Districts: weight, focus, and the amber of the one you entered. */
-    districts.forEach((d, i) => {
-      const lit = opened < 0 || i === opened;
-      d.w = ease(d.w, lit ? 1 : .2, dt, 3.4);
-      d.f = ease(d.f, i === opened ? 1 : 0, dt, 3.2);
+    stations.forEach((st, i) => {
+      st.f = ease(st.f, i === opened ? 1 : 0, dt, 3.2);
       const hov = hover === i && opened < 0 ? 1 : 0;
-      tc.copy(cEdge).lerp(cAm, d.f);
-      d.edges.color.copy(tc);
-      d.edges.opacity = (dark ? .85 : 1) * d.w * (1 + d.f * .15 + hov * .15);
-      if (d.body !== monoMat) d.body.opacity = (dark ? .82 : .95) * d.w;
-      else d.body.opacity = (dark ? .3 : .62) * Math.max(.45, d.w);
-      d.glows.forEach((gm) => {
-        gm.color.copy(tc);
-        gm.opacity = gm.userData.o * glowF * d.w * (1 + hov * .35 - d.f * .25);
+      tc.copy(cEdge).lerp(cAm, st.f);
+      st.gates.forEach((g, lane) => {
+        g.color.copy(tc);
+        g.opacity = g.userData.o * (dark ? 1 : 1.15) * (1 + st.f * .2 + hov * .2 + st.busy[lane] * .35);
+      });
+      st.glows.forEach((gm, lane) => {
+        gm.color.copy(cEdge).lerp(cAm, Math.max(st.f, st.busy[lane]));
+        gm.opacity = gm.userData.o * glowF * (1 + hov * .3 + st.busy[lane] * .9);
       });
     });
 
-    /* Integrations: the wires of the district you entered stay lit. */
-    wireEnds.forEach(([, ], i) => {
-      const [a, b] = WIRES[i];
-      const da = byId[a], db = byId[b];
-      const w = Math.max(da ? da.w : 1, db ? db.w : 1);
-      const hot = (da && da.f) || (db && db.f) || 0;
-      tc.copy(cEm).lerp(cAm, hot).lerp(scene.background, 1 - w);
-      wireCol.set([tc.r, tc.g, tc.b, tc.r, tc.g, tc.b], i * 6);
-      const tf = traffic[i];
-      tf.t = (tf.t + dt * (.22 + hot * .55)) % 1;
-      tf.g.position.lerpVectors(wireEnds[i][0], wireEnds[i][1], tf.t);
-      tf.g.material.opacity = tf.g.material.userData.o * glowF * w * Math.sin(tf.t * Math.PI);
-    });
-    wGeo.attributes.color.needsUpdate = true;
-
-    for (let i = 0; i < PN; i++) {
-      const s = ps[i]; s.y += s.v; if (s.y > 9) s.y = 0; s.a += .002;
-      pp[i * 3] = Math.cos(s.a) * s.r; pp[i * 3 + 1] = s.y; pp[i * 3 + 2] = Math.sin(s.a) * s.r;
-    }
-    pGeo.attributes.position.needsUpdate = true;
-
-    /* Camera: a slow pass over the city, easing down into a district. */
-    if (opened >= 0) camNode = districts[opened];
+    /* Camera: a steady side view of both lanes, easing in on a station. */
+    if (opened >= 0) camNode = stations[opened];
     camF = ease(camF, opened >= 0 ? 1 : 0, dt, 2.2);
     if (camF < .002) camNode = null;
 
-    const ang = t * .045 * (1 - camF) + mx * .09 * (1 - camF * .8);
-    free.set(Math.sin(ang) * 41, 34 - my * 3 * (1 - camF), Math.cos(ang) * 41);
-    freeAt.set(0, 1.4, 0);
+    const ang = mx * .06 * (1 - camF * .8);
+    free.set(Math.sin(ang) * 6 + world.position.x, 11 - my * 1.3 * (1 - camF), 40);
+    freeAt.set(world.position.x, 4.6, 0);
     if (camNode) {
-      nodeP.set(camNode.grp.position.x, camNode.top * .6, camNode.grp.position.z);
-      camAt.copy(nodeP);
-      /* Stay above the skyline: diving to street level buries the district
-         behind the ordinary towers standing between it and the camera. */
-      camPos.copy(free).sub(nodeP).normalize().multiplyScalar(22).add(nodeP);
-      camPos.y = nodeP.y + 12;
+      camAt.set(camNode.x + world.position.x, 1.4, 0);
+      camPos.set(camNode.x + world.position.x + 4, 8, 20);
       camera.position.lerpVectors(free, camPos, camF);
       lookAt.lerpVectors(freeAt, camAt, camF);
     } else {
       camera.position.copy(free); lookAt.copy(freeAt);
     }
     camera.lookAt(lookAt);
-    if (bloom) bloom.strength = .55 - camF * .12;
+    if (bloom) bloom.strength = .5 - camF * .1;
 
     if (!reduce) pick();
 
-    /* Anchor the panel to the district you entered. */
+    /* Station tags, projected onto the gates. */
+    hudAt += dt;
+    if (hudAt > .05 || reduce) {
+      hudAt = 0;
+      paint();
+      [Z_AUTO, Z_MAN].forEach((z, k) => {
+        tmp.set(-19.5, 1.1, z).applyMatrix4(world.matrixWorld).project(camera);
+        laneTags[k].style.transform = "translate(" + ((tmp.x * .5 + .5) * W) + "px,"
+                                    + ((-tmp.y * .5 + .5) * H) + "px) translate(-50%,-50%)";
+        laneTags[k].style.opacity = tmp.z > 1 ? 0 : 1;
+      });
+      stations.forEach((st, i) => {
+        tmp.set(st.x, 3.5, Z_AUTO).applyMatrix4(world.matrixWorld).project(camera);
+        const px = (tmp.x * .5 + .5) * W, py = (-tmp.y * .5 + .5) * H;
+        const tag = tagEls[i];
+        tag.style.transform = "translate(" + px + "px," + py + "px) translate(-50%,-50%)";
+        tag.style.opacity = tmp.z > 1 ? 0 : 1;
+      });
+    }
+
     if (camNode && !detail.hidden) {
-      tmp.set(camNode.grp.position.x, camNode.top, camNode.grp.position.z).applyMatrix4(world.matrixWorld).project(camera);
+      tmp.set(camNode.x, 3.6, Z_AUTO).applyMatrix4(world.matrixWorld).project(camera);
       const px = (tmp.x * .5 + .5) * W, py = (-tmp.y * .5 + .5) * H;
       const pw = detail.offsetWidth, ph = detail.offsetHeight, pad = 18;
-      let left = px + 86, top = py - ph * .5;
-      if (left + pw > W - pad) left = px - 86 - pw;
+      let left = px + 80, top = py - ph * .4;
+      if (left + pw > W - pad) left = px - 80 - pw;
       detail.style.left = Math.max(pad, Math.min(W - pw - pad, left)) + "px";
       detail.style.top = Math.max(70, Math.min(H - ph - 76, top)) + "px";
     }
@@ -771,6 +819,7 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
 
   ready = true;
   applyTheme();
+  paint();
   if (reduce) { frame(0); return; }
   let last = performance.now();
   (function loop(now) {

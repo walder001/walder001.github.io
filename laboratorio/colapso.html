@@ -535,10 +535,11 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") release(); });
 
   /* ---- Pointer ---- */
   let mx = 0, my = 0, active = 0, t = 0, W = 1, H = 1;
-  let ndcX = 0, ndcY = 0, hover = -1, downAt = null;
+  let ndcX = 0, ndcY = 0, hover = -1, downAt = null, overCanvas = false;
   addEventListener("pointermove", (e) => {
     mx = (e.clientX / innerWidth) * 2 - 1; my = (e.clientY / innerHeight) * 2 - 1; active = 1;
     ndcX = mx; ndcY = -my;
+    overCanvas = (e.target === canvas);
     pick();                 /* hover answers on the event, not on the next frame */
     if (reduce && ready) frame(0);
   });
@@ -547,6 +548,7 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") release(); });
      sometimes measure a neighbour — or nothing — after an aim the user got right. */
   canvas.addEventListener("pointerdown", (e) => {
     ndcX = (e.clientX / innerWidth) * 2 - 1; ndcY = -((e.clientY / innerHeight) * 2 - 1);
+    overCanvas = true;
     pick();
     downAt = { x: e.clientX, y: e.clientY, i: hover };
   });
@@ -564,7 +566,7 @@ addEventListener("keydown", (e) => { if (e.key === "Escape") release(); });
     ndc.set(ndcX, ndcY);
     ray.setFromCamera(ndc, camera);
     const hitList = ray.intersectObjects(hits, false);
-    hover = hitList.length ? hitList[0].object.userData.i : -1;
+    hover = (overCanvas && hitList.length) ? hitList[0].object.userData.i : -1;
     canvas.classList.toggle("over", hover >= 0);
   }
 

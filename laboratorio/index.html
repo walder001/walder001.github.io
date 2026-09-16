@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<meta name="theme-color" content="#0F3346">
+<title>Laboratorio — Cuaderno de experimentos · Walder Reyes</title>
+<meta name="description" content="Cuaderno de experimentos: ideas que pruebo antes de que sean argumentos. Qué pregunta se hace cada una, qué construí y qué aprendí, incluidas las veces que me equivoqué.">
+<link rel="canonical" href="https://walder001.github.io/laboratorio/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --void: #0F3346; --void-rgb: 15,51,70;
+    --panel: #143D52; --panel-rgb: 20,61,82;
+    --line: #24566E;
+    --emerald: #C8DCE4; --accent-rgb: 200,220,228;
+    --mint: #EAF3F6; --light-rgb: 234,243,246;
+    --text: #EEF5F7; --muted: #A9C3CD; --faint: #7C9DAB; --amber: #E8C06A; --amber-rgb: 232,192,106;
+    --em-glow: 0 0 24px rgba(200,220,228,.45);
+    --scene-mode: dark;
+    --show-sun: inline; --show-moon: none;
+    --mono: "Space Mono", "Cascadia Mono", Consolas, monospace;
+    --sans: "Manrope", "Segoe UI", system-ui, sans-serif;
+    --pad: clamp(20px, 5vw, 40px);
+    --col: 760px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --void: #EEF4F6; --void-rgb: 238,244,246;
+      --panel: #FFFFFF; --panel-rgb: 255,255,255;
+      --line: #C8D8DF;
+      --emerald: #3E6576; --accent-rgb: 62,101,118;
+      --mint: #2C4B58; --light-rgb: 15,51,70;
+      --text: #0F3346; --muted: #3F6273; --faint: #6A8694; --amber: #9A6B00; --amber-rgb: 154,107,0;
+      --em-glow: none; --scene-mode: light;
+      --show-sun: none; --show-moon: inline;
+    }
+  }
+  :root[data-theme="light"] {
+    --void: #EEF4F6; --void-rgb: 238,244,246;
+    --panel: #FFFFFF; --panel-rgb: 255,255,255;
+    --line: #C8D8DF;
+    --emerald: #3E6576; --accent-rgb: 62,101,118;
+    --mint: #2C4B58; --light-rgb: 15,51,70;
+    --text: #0F3346; --muted: #3F6273; --faint: #6A8694; --amber: #9A6B00; --amber-rgb: 154,107,0;
+    --em-glow: none; --scene-mode: light;
+    --show-sun: none; --show-moon: inline;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--void); color: var(--text);
+         font: 400 17px/1.7 var(--sans); -webkit-font-smoothing: antialiased; }
+  body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 70; opacity: .035;
+    background: repeating-linear-gradient(0deg, rgba(var(--light-rgb),.6) 0 1px, transparent 1px 3px); }
+  a { color: inherit; }
+  p { margin: 0; }
+  :focus-visible { outline: 1.5px solid var(--emerald); outline-offset: 4px; border-radius: 4px; }
+  h1, h2, h3 { margin: 0; font-family: var(--mono); font-weight: 700; letter-spacing: -.04em; text-wrap: balance; }
+  .label { font: 400 11.5px var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--faint); }
+  .em { color: var(--emerald); text-shadow: var(--em-glow); }
+  .wrap { max-width: var(--col); margin: 0 auto; padding-inline: var(--pad); }
+
+  /* ---- Nav ---- */
+  nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30;
+        background: rgba(var(--void-rgb),.86); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+  nav .bar { max-width: var(--col); margin: 0 auto; padding-inline: var(--pad);
+             display: flex; align-items: center; gap: 12px; height: 64px; }
+  .mark { display: flex; align-items: center; gap: 9px; text-decoration: none; font: 700 14px var(--mono); letter-spacing: -.02em; }
+  .ket { width: 28px; height: 26px; overflow: visible; flex: none; }
+  .ket path, .ket circle, .ket ellipse { fill: none; stroke: var(--emerald); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .ket .q { stroke-width: 1.4; } .ket .q2 { stroke-width: 1; opacity: .45; } .ket .v { stroke: var(--text); stroke-width: 1.5; }
+  .ket .dot { fill: var(--mint); stroke: none; }
+  nav .sep { flex: 1; }
+  .lang { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; padding: 3px; }
+  .lang button { font: 400 11px var(--mono); color: var(--muted); background: none; border: 0; padding: 5px 9px; border-radius: 4px; cursor: pointer; }
+  .lang button[aria-pressed="true"] { background: var(--emerald); color: var(--void); }
+  .icon-btn { display: inline-grid; place-items: center; width: 34px; height: 30px; border: 1px solid var(--line);
+              border-radius: 6px; background: none; color: var(--text); cursor: pointer; }
+  .icon-btn:hover { border-color: var(--emerald); color: var(--emerald); }
+  .icon-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-btn .sun { display: var(--show-sun); } .icon-btn .moon { display: var(--show-moon); }
+
+  /* ---- Opening ---- */
+  header.intro { padding-block: clamp(46px, 9vw, 86px) clamp(30px, 6vw, 54px); }
+  header.intro h1 { font-size: clamp(30px, 6.2vw, 46px); margin-top: 14px; }
+  header.intro .lede { margin-top: 20px; font-size: clamp(16px, 2.2vw, 18.5px); line-height: 1.65; color: var(--muted); }
+  header.intro .lede + .lede { margin-top: 14px; }
+
+  /* ---- The log ---- */
+  .log { display: grid; gap: clamp(40px, 7vw, 72px); padding-bottom: clamp(50px, 9vw, 90px); }
+  .entry { display: grid; gap: 16px; }
+  .entry .top { display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px 14px; }
+  .entry .no { font: 700 11.5px var(--mono); letter-spacing: .1em; color: var(--amber); }
+  .entry .status { font: 400 11px var(--mono); letter-spacing: .06em; text-transform: uppercase;
+                   color: var(--faint); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+  .entry .status.live { color: var(--emerald); border-color: var(--emerald); }
+  .entry h2 { font-size: clamp(23px, 4.4vw, 30px); }
+  .entry .q { font: 400 italic 17px/1.55 var(--sans); color: var(--emerald); }
+  .entry .body { font-size: 16px; line-height: 1.7; color: var(--muted); }
+
+  /* A live miniature, not a screenshot: the lab is things that run. */
+  .mini { position: relative; border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+          background: rgba(var(--panel-rgb),.45); }
+  .mini canvas { display: block; width: 100%; height: 170px; }
+  .mini figcaption { position: absolute; left: 11px; bottom: 9px; font: 400 10.5px var(--mono);
+                     letter-spacing: .07em; text-transform: uppercase; color: var(--faint); }
+
+
+  /* ---- Lab-report grammar ---- */
+  .method { border: 1px solid var(--line); border-radius: 12px; padding: 19px 21px;
+            display: grid; gap: 9px; background: rgba(var(--panel-rgb),.4); }
+  .method p { font-size: 15.5px; line-height: 1.65; color: var(--muted); }
+  .method .rule { color: var(--emerald); }
+  /* `.psi` and not `.ket`: that class already belongs to the logo mark. */
+  .entry .psi { font: 700 14px var(--mono); color: var(--amber); letter-spacing: .01em; }
+  .model { font: 400 11.5px var(--mono); letter-spacing: .04em; color: var(--faint); margin-top: -4px; }
+  .fields { margin: 0; display: grid; gap: 12px; }
+  .field { display: grid; grid-template-columns: 104px 1fr; gap: 3px 18px; align-items: start; }
+  .field dt { font: 400 10.5px var(--mono); letter-spacing: .09em; text-transform: uppercase;
+              color: var(--faint); padding-top: 5px; }
+  .field dd { margin: 0; font-size: 15.5px; line-height: 1.62; color: var(--muted); }
+  .obs { display: flex; flex-wrap: wrap; gap: 5px 14px; padding-top: 11px; border-top: 1px solid var(--line);
+         font: 400 11.5px var(--mono); color: var(--faint); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+  .obs b { color: var(--emerald); font-weight: 400; }
+  @media (max-width: 560px) { .field { grid-template-columns: 1fr; gap: 1px; } .field dt { padding-top: 0; } }
+
+  .learned { border-left: 2px solid rgba(var(--amber-rgb),.55); padding: 2px 0 2px 16px; display: grid; gap: 7px; }
+  .learned .k { font: 400 10.5px var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--amber); }
+  .learned p { font-size: 16px; line-height: 1.68; color: var(--muted); }
+
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .stack { font: 400 12px var(--mono); color: var(--faint); letter-spacing: .02em; }
+  .open { display: inline-flex; align-items: center; gap: 9px; text-decoration: none;
+          font: 700 13px var(--mono); padding: 12px 19px; border-radius: 8px;
+          background: var(--emerald); color: var(--void); border: 1px solid var(--emerald);
+          box-shadow: 0 0 34px -10px rgba(var(--accent-rgb),.7); transition: background .25s; }
+  .open:hover { background: var(--mint); }
+
+  /* The notebook is still open: say so structurally, not as a flourish. */
+  .next { border: 1px dashed var(--line); border-radius: 12px; padding: 22px 20px; display: grid; gap: 9px; }
+  .next .psi { font: 700 14px var(--mono); color: var(--faint); }
+  .next h2 { font-size: 19px; color: var(--faint); }
+  .next p { font-size: 15.5px; color: var(--faint); }
+
+  footer { border-top: 1px solid var(--line); padding-block: 26px calc(40px + env(safe-area-inset-bottom, 0px)); }
+  footer .bar { display: flex; flex-wrap: wrap; gap: 12px 22px; align-items: center; }
+  footer a { font: 400 13px var(--mono); color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--emerald); }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<nav aria-label="Principal">
+  <div class="bar">
+    <a class="mark" href="../" aria-label="Walder Reyes, inicio">
+      <svg class="ket" viewBox="0 0 44 40" aria-hidden="true"><path d="M5 5v30"/><path d="M33 5l7 15-7 15"/><circle class="q" cx="19" cy="20" r="9"/><ellipse class="q2" cx="19" cy="20" rx="9" ry="3.2"/><path class="v" d="M19 20l5.6-6.6"/><circle class="dot" cx="25" cy="13" r="2.4"/></svg>
+      <span>walder<b class="em">.reyes</b></span>
+    </a>
+    <span class="sep"></span>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button type="button" class="icon-btn" id="themeBtn" aria-label="Cambiar entre modo claro y oscuro">
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<header class="intro wrap">
+  <p class="label" data-i18n="in.k">Laboratorio</p>
+  <h1 data-i18n="in.h">Cuaderno de experimentos</h1>
+  <p class="lede" data-i18n="in.p1">Aquí pruebo ideas antes de que sean argumentos. Cada experimento se hace una pregunta y trata de responderla con algo que funciona, no con un párrafo.</p>
+  <p class="lede" data-i18n="in.p2">Cada uno se apoya en un modelo real —medición cuántica en uno, teoría de colas en el otro— y se anota como un reporte: hipótesis, método, observación y lo que aprendí. Incluido lo que salió mal: una de estas dos piezas nació equivocada y hubo que rehacerla entera.</p>
+</header>
+
+<main class="log wrap" id="log">
+
+  <section class="method">
+    <p class="label" data-i18n="mt.k">Método</p>
+    <p data-i18n-html="mt.p">Cada experimento tiene que pasar una prueba antes de quedarse: <span class="rule">quítale el medio y mira si pierdes el argumento.</span> Si la pieza sigue diciendo lo mismo sin el 3D, el 3D no estaba trabajando. Esa regla descartó la primera versión de |ψ₂⟩.</p>
+  </section>
+
+  <article class="entry">
+    <div class="top">
+      <span class="psi">|ψ₁⟩</span>
+      <h2>Colapso</h2>
+      <span class="status live" data-i18n="st.live">En el sitio</span>
+    </div>
+    <p class="model" data-i18n="e1.m">Medición proyectiva · regla de Born</p>
+    <p class="q" data-i18n="e1.q">¿Se puede operar una idea abstracta con el dedo?</p>
+
+    <figure class="mini" style="margin:0">
+      <canvas id="miniCollapse" aria-hidden="true"></canvas>
+      <figcaption data-i18n="e1.cap">Cinco estados · medición</figcaption>
+    </figure>
+
+    <dl class="fields">
+      <div class="field"><dt data-i18n="lbl.hyp">Hipótesis</dt><dd data-i18n="e1.h">Si el gesto y el significado son el mismo acto, la pieza no necesita explicarse.</dd></div>
+      <div class="field"><dt data-i18n="lbl.met">Método</dt><dd data-i18n="e1.me">Cinco estados con amplitudes que evolucionan. Un clic mide uno y proyecta el sistema sobre él. El botón «Medir» no elige: sortea según |cᵢ|² en ese instante.</dd></div>
+      <div class="field"><dt data-i18n="lbl.obs">Observación</dt><dd data-i18n="e1.o">El expediente del caso se abre dentro de la escena. Nadie tiene que salir de la pieza para leerlo.</dd></div>
+    </dl>
+
+    <div class="learned">
+      <span class="k" data-i18n="lbl.learned">Qué aprendí</span>
+      <p data-i18n-html="e1.l">Que el gesto y el significado tienen que ser el mismo acto. Hacer clic <em>es</em> medir, y medir <em>es</em> colapsar: no hay traducción entre lo que haces y lo que ocurre. Cuando esa distancia es cero, la pieza no necesita explicarse.</p>
+    </div>
+
+    <p class="obs" data-i18n-html="e1.ob"><span><b>5</b> estados</span><span><b>5</b> enlaces</span><span><b>20 400</b> puntos de campo</span><span><b>3</b> niveles</span></p>
+
+    <div class="meta">
+      <a class="open" href="colapso.html"><span data-i18n="cta.open">Abrir el experimento</span> <span aria-hidden="true">→</span></a>
+      <span class="stack">Three.js · WebGL · Raycasting</span>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="top">
+      <span class="psi">|ψ₂⟩</span>
+      <h2>Ecosistema</h2>
+      <span class="status" data-i18n="st.branch">En la rama</span>
+    </div>
+    <p class="model" data-i18n="e2.m">Teoría de colas · un servidor por estación contra multiservidor</p>
+    <p class="q" data-i18n="e2.q">¿Se puede enseñar la diferencia entre lo manual y lo automático sin inventar métricas?</p>
+
+    <figure class="mini" style="margin:0">
+      <canvas id="miniFlow" aria-hidden="true"></canvas>
+      <figcaption data-i18n="e2.cap">Dos carriles · misma carga</figcaption>
+    </figure>
+
+    <dl class="fields">
+      <div class="field"><dt data-i18n="lbl.hyp">Hipótesis</dt><dd data-i18n="e2.h">Si la asimetría sale del modelo, no hace falta ni un número inventado sobre el negocio de nadie.</dd></div>
+      <div class="field"><dt data-i18n="lbl.met">Método</dt><dd data-i18n="e2.me">Dos carriles, las mismas cuatro estaciones y el mismo trabajo en cada una. Lo único que cambia: el automatizado atiende varios pagos a la vez y el manual tiene una persona por estación.</dd></div>
+      <div class="field"><dt data-i18n="lbl.obs">Observación</dt><dd data-i18n="e2.o">Con un pago los dos carriles van parejos. Con veinte, la cola manual se apila sola.</dd></div>
+    </dl>
+
+    <div class="learned">
+      <span class="k" data-i18n="lbl.learned">Qué aprendí</span>
+      <p data-i18n="e2.l">Empezó siendo un mapa: una ciudad con torres etiquetadas. No funcionaba, y la prueba era simple: si le quitabas el 3D no perdías nada, porque el texto lo explicaba todo y la escena solo decoraba. Se rehízo como demostración. La diferencia que se ve no sale de un número inventado sobre el negocio de nadie: sale del modelo, donde un carril atiende varios pagos a la vez y el otro tiene una persona por estación.</p>
+    </div>
+
+    <p class="obs" data-i18n-html="e2.ob"><span><b>4</b> estaciones</span><span><b>2</b> carriles</span><span><b>1</b> servidor por estación en el manual</span><span>hasta <b>160</b> pagos en vuelo</span></p>
+
+    <div class="meta">
+      <a class="open" href="ecosistema-3d.html"><span data-i18n="cta.open">Abrir el experimento</span> <span aria-hidden="true">→</span></a>
+      <span class="stack" data-i18n="e2.s">Three.js · Simulación de colas</span>
+    </div>
+  </article>
+
+  <div class="next">
+    <span class="psi">|ψ₃⟩</span>
+    <h2 data-i18n="e3.h">Sin medir</h2>
+    <p data-i18n="e3.p">Mientras no lo escriba, este experimento puede ser cualquiera de los que estoy pensando. Eso es, literalmente, una superposición.</p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap bar">
+    <a href="../" data-i18n="ft.home">← Volver al portafolio</a>
+    <span class="sep" style="flex:1"></span>
+    <a href="mailto:walderreyes34@gmail.com">walderreyes34@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+/* ---------------------------------------------------------------------------
+   The lab index. Deliberately the quietest page here: no WebGL, no third
+   heavy scene competing with the two it links to. The miniatures are small
+   2D canvases that run the same idea as the piece, not screenshots of it.
+--------------------------------------------------------------------------- */
+
+const UI = {
+  es: {
+    "in.k": "Laboratorio", "in.h": "Cuaderno de experimentos",
+    "in.p1": "Aquí pruebo ideas antes de que sean argumentos. Cada experimento se hace una pregunta y trata de responderla con algo que funciona, no con un párrafo.",
+    "in.p2": "Cada uno se apoya en un modelo real —medición cuántica en uno, teoría de colas en el otro— y se anota como un reporte: hipótesis, método, observación y lo que aprendí. Incluido lo que salió mal: una de estas dos piezas nació equivocada y hubo que rehacerla entera.",
+    "mt.k": "Método",
+    "mt.p": "Cada experimento tiene que pasar una prueba antes de quedarse: <span class=\"rule\">quítale el medio y mira si pierdes el argumento.</span> Si la pieza sigue diciendo lo mismo sin el 3D, el 3D no estaba trabajando. Esa regla descartó la primera versión de |ψ₂⟩.",
+    "lbl.hyp": "Hipótesis", "lbl.met": "Método", "lbl.obs": "Observación",
+    "e1.m": "Medición proyectiva · regla de Born",
+    "e1.h": "Si el gesto y el significado son el mismo acto, la pieza no necesita explicarse.",
+    "e1.me": "Cinco estados con amplitudes que evolucionan. Un clic mide uno y proyecta el sistema sobre él. El botón «Medir» no elige: sortea según |cᵢ|² en ese instante.",
+    "e1.o": "El expediente del caso se abre dentro de la escena. Nadie tiene que salir de la pieza para leerlo.",
+    "e1.ob": "<span><b>5</b> estados</span><span><b>5</b> enlaces</span><span><b>20 400</b> puntos de campo</span><span><b>3</b> niveles</span>",
+    "e2.m": "Teoría de colas · un servidor por estación contra multiservidor",
+    "e2.h": "Si la asimetría sale del modelo, no hace falta ni un número inventado sobre el negocio de nadie.",
+    "e2.me": "Dos carriles, las mismas cuatro estaciones y el mismo trabajo en cada una. Lo único que cambia: el automatizado atiende varios pagos a la vez y el manual tiene una persona por estación.",
+    "e2.o": "Con un pago los dos carriles van parejos. Con veinte, la cola manual se apila sola.",
+    "e2.ob": "<span><b>4</b> estaciones</span><span><b>2</b> carriles</span><span><b>1</b> servidor por estación en el manual</span><span>hasta <b>160</b> pagos en vuelo</span>",
+    "st.live": "En el sitio", "st.branch": "En la rama",
+    "lbl.learned": "Qué aprendí", "cta.open": "Abrir el experimento",
+    "e1.q": "¿Se puede operar una idea abstracta con el dedo?",
+    "e1.cap": "Cinco estados · medición",
+    "e1.b": "Cinco estados en superposición, con sus amplitudes cambiando. Haces clic en uno y lo mides: el sistema colapsa sobre él, los demás se apagan y el expediente del caso se abre dentro de la misma escena, sin sacarte a ninguna parte.",
+    "e1.l": "Que el gesto y el significado tienen que ser el mismo acto. Hacer clic <em>es</em> medir, y medir <em>es</em> colapsar: no hay traducción entre lo que haces y lo que ocurre. Cuando esa distancia es cero, la pieza no necesita explicarse.",
+    "e2.q": "¿Se puede enseñar la diferencia entre lo manual y lo automático sin inventar métricas?",
+    "e2.cap": "Dos carriles · misma carga",
+    "e2.b": "Un pago recorre cuatro estaciones, dos veces. Arriba lo hace un sistema; abajo, personas. Manda un pago y los dos carriles van parejos. Manda veinte y la cola manual se apila sola.",
+    "e2.l": "Empezó siendo un mapa: una ciudad con torres etiquetadas. No funcionaba, y la prueba era simple: si le quitabas el 3D no perdías nada, porque el texto lo explicaba todo y la escena solo decoraba. Se rehízo como demostración. La diferencia que se ve no sale de un número inventado sobre el negocio de nadie: sale del modelo, donde un carril atiende varios pagos a la vez y el otro tiene una persona por estación.",
+    "e2.s": "Three.js · Simulación de colas",
+    "e3.h": "Sin medir", "e3.p": "Mientras no lo escriba, este experimento puede ser cualquiera de los que estoy pensando. Eso es, literalmente, una superposición.",
+    "ft.home": "← Volver al portafolio",
+  },
+  en: {
+    "in.k": "Lab", "in.h": "Experiment notebook",
+    "in.p1": "This is where I try ideas before they become arguments. Each experiment asks a question and answers it with something that works, not with a paragraph.",
+    "in.p2": "Each one rests on a real model — quantum measurement in one, queueing theory in the other — and is written up like a report: hypothesis, method, observation, and what it taught me. Including what went wrong: one of these two pieces was born wrong and had to be rebuilt from scratch.",
+    "mt.k": "Method",
+    "mt.p": "Every experiment has to pass one test before it stays: <span class=\"rule\">strip the medium away and see whether the argument survives.</span> If the piece still says the same thing without the 3D, the 3D was not working. That rule threw out the first version of |ψ₂⟩.",
+    "lbl.hyp": "Hypothesis", "lbl.met": "Method", "lbl.obs": "Observation",
+    "e1.m": "Projective measurement · Born rule",
+    "e1.h": "If the gesture and the meaning are the same act, the piece needs no explaining.",
+    "e1.me": "Five states with evolving amplitudes. A click measures one and projects the system onto it. The \u201cMeasure\u201d button does not choose: it draws from |cᵢ|² at that instant.",
+    "e1.o": "The case file opens inside the scene. Nobody has to leave the piece to read it.",
+    "e1.ob": "<span><b>5</b> states</span><span><b>5</b> links</span><span><b>20,400</b> field points</span><span><b>3</b> levels</span>",
+    "e2.m": "Queueing theory · one server per station versus many",
+    "e2.h": "If the asymmetry falls out of the model, no invented number about anyone's business is needed.",
+    "e2.me": "Two lanes, the same four stations, the same work at each. The only difference: the automated lane serves several payments at once and the manual one has one person per station.",
+    "e2.o": "With one payment both lanes keep pace. With twenty, the manual queue piles up on its own.",
+    "e2.ob": "<span><b>4</b> stations</span><span><b>2</b> lanes</span><span><b>1</b> server per station in the manual lane</span><span>up to <b>160</b> payments in flight</span>",
+    "st.live": "Live", "st.branch": "On a branch",
+    "lbl.learned": "What it taught me", "cta.open": "Open the experiment",
+    "e1.q": "Can an abstract idea be operated with a finger?",
+    "e1.cap": "Five states · measurement",
+    "e1.b": "Five states in superposition, amplitudes shifting. Click one and you measure it: the system collapses onto it, the others go dark, and the case file opens inside the same scene without taking you anywhere.",
+    "e1.l": "That the gesture and the meaning have to be the same act. Clicking <em>is</em> measuring, and measuring <em>is</em> collapsing: there is no translation between what you do and what happens. When that distance is zero, the piece needs no explaining.",
+    "e2.q": "Can you show the difference between manual and automated without inventing metrics?",
+    "e2.cap": "Two lanes · same load",
+    "e2.b": "A payment runs four stations, twice. Up top a system does it; below, people do. Send one payment and both lanes keep pace. Send twenty and the manual queue piles up on its own.",
+    "e2.l": "It started as a map: a city with labelled towers. It did not work, and the test was simple: strip the 3D away and you lost nothing, because the text explained everything and the scene only decorated it. It was rebuilt as a demonstration. The difference you see does not come from an invented number about anyone's business: it falls out of the model, where one lane serves several payments at once and the other has one person per station.",
+    "e2.s": "Three.js · Queue simulation",
+    "e3.h": "Unmeasured", "e3.p": "Until I write it, this experiment can be any of the ones I am considering. That is, literally, a superposition.",
+    "ft.home": "← Back to the portfolio",
+  },
+};
+
+let lang = "es";
+function setLang(next) {
+  lang = next;
+  document.documentElement.lang = next;
+  const d = UI[next] || UI.es;
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const v = d[el.dataset.i18n];
+    if (v != null) el.textContent = v;
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    const v = d[el.dataset.i18nHtml];
+    if (v != null) el.innerHTML = v;   /* only our own strings ever land here */
+  });
+  document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === next)));
+  try { localStorage.setItem("wr-lang", next); } catch (e) {}
+}
+document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+/* ---------- Theme ---------- */
+(function () {
+  const docEl = document.documentElement;
+  try { const s = localStorage.getItem("wr-theme"); if (s === "light" || s === "dark") docEl.dataset.theme = s; } catch (e) {}
+  const current = () => docEl.dataset.theme || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  document.getElementById("themeBtn").addEventListener("click", () => {
+    const next = current() === "dark" ? "light" : "dark";
+    docEl.dataset.theme = next;
+    try { localStorage.setItem("wr-theme", next); } catch (e) {}
+  });
+})();
+
+/* ---------- Miniatures ----------------------------------------------------
+   Each one runs the same idea as its piece, at a size that costs nothing.
+   They read the CSS tokens every frame, so the theme toggle reaches them. */
+(function () {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const token = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  function setup(canvas, draw) {
+    const ctx = canvas.getContext("2d");
+    let w = 0, h = 0, visible = true;
+    function size() {
+      const r = canvas.getBoundingClientRect();
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      w = r.width; h = r.height;
+      canvas.width = Math.max(1, Math.round(w * dpr));
+      canvas.height = Math.max(1, Math.round(h * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    new ResizeObserver(size).observe(canvas);
+    size();
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(canvas);
+    }
+    if (reduce) { draw(ctx, w, h, 3.2); return; }   /* one representative frame */
+    let t = 0, last = performance.now();
+    (function loop(now) {
+      requestAnimationFrame(loop);
+      const dt = Math.min(.05, (now - last) / 1000); last = now;
+      if (!visible || document.hidden) return;
+      t += dt;
+      ctx.clearRect(0, 0, w, h);
+      draw(ctx, w, h, t);
+    })(last);
+  }
+
+  /* 01 — amplitudes breathe, then one measurement collapses the set. */
+  const cv1 = document.getElementById("miniCollapse");
+  if (cv1) setup(cv1, (ctx, w, h, t) => {
+    const em = token("--emerald"), am = token("--amber"), faint = token("--faint");
+    const CYCLE = 8, p = t % CYCLE;
+    const collapsing = p > 4.2;
+    const k = collapsing ? Math.min(1, (p - 4.2) / .7) : 0;
+    const back = p > 7.3 ? Math.min(1, (p - 7.3) / .7) : 0;
+    const f = Math.max(0, k - back);
+    const picked = Math.floor(t / CYCLE) % 5;
+
+    const xs = [], ys = [], amp = [];
+    let sum = 0;
+    for (let i = 0; i < 5; i++) {
+      const raw = .55 + .45 * (Math.sin(t * .5 + i * 1.9) * .5 + .5);
+      amp.push(raw); sum += raw;
+      xs.push(w * (.14 + i * .18));
+      ys.push(h * (.5 + Math.sin(t * .7 + i * 1.3) * .16));
+    }
+
+    ctx.lineWidth = 1;
+    [[0,1],[1,2],[0,3],[3,2],[0,4]].forEach(([a, b2]) => {
+      const lit = !f || a === picked || b2 === picked;
+      ctx.strokeStyle = lit ? em : faint;
+      ctx.globalAlpha = (lit ? .3 : .3 * (1 - f)) * (lit && f ? .55 : 1);
+      ctx.beginPath(); ctx.moveTo(xs[a], ys[a]); ctx.lineTo(xs[b2], ys[b2]); ctx.stroke();
+    });
+    ctx.globalAlpha = 1;
+
+    for (let i = 0; i < 5; i++) {
+      const isP = i === picked;
+      const prob = amp[i] / sum;
+      const shown = f ? (isP ? prob + (1 - prob) * f : prob * (1 - f)) : prob;
+      const r = 3 + shown * 5 * 5 * .62;
+      ctx.beginPath(); ctx.arc(xs[i], ys[i], Math.max(1.2, r), 0, 6.2832);
+      ctx.fillStyle = f && isP ? am : em;
+      ctx.globalAlpha = f && !isP ? Math.max(.12, 1 - f) : 1;
+      ctx.fill();
+      ctx.globalAlpha = .18;
+      ctx.beginPath(); ctx.arc(xs[i], ys[i], Math.max(1.2, r) * 2.1, 0, 6.2832); ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  });
+
+  /* 02 — the same queue model, miniature: parallel lane vs one server each. */
+  const cv2 = document.getElementById("miniFlow");
+  if (cv2) setup(cv2, (ctx, w, h, t) => {
+    const em = token("--emerald"), am = token("--amber"), faint = token("--faint"), line = token("--line");
+    const LOOP = 13, p = t % LOOP;
+    const X = [.12, .37, .62, .87].map((v) => w * v);
+    const yA = h * .34, yM = h * .68;
+    const SPAWN = .5, WORK_A = .3, WORK_M = 2.4, SPEED = w * .16;
+
+    ctx.strokeStyle = line; ctx.lineWidth = 1; ctx.globalAlpha = .9;
+    [yA, yM].forEach((y) => { ctx.beginPath(); ctx.moveTo(w * .05, y); ctx.lineTo(w * .95, y); ctx.stroke(); });
+    X.forEach((x) => [yA, yM].forEach((y) => {
+      ctx.strokeStyle = line; ctx.globalAlpha = .9;
+      ctx.strokeRect(x - 7, y - 10, 14, 20);
+    }));
+    ctx.globalAlpha = 1;
+
+    /* Replay the model from zero each loop — cheap, and always identical. */
+    const spawned = Math.min(18, Math.floor(p / SPAWN) + 1);
+    for (let lane = 0; lane < 2; lane++) {
+      const work = lane === 0 ? WORK_A : WORK_M;
+      let freeAt = 0;                       /* the manual lane has one server */
+      for (let i = 0; i < spawned; i++) {
+        const born = i * SPAWN;
+        let age = p - born;
+        if (age < 0) continue;
+        let x = w * .05 + age * SPEED, st = 0, done = false, waiting = false;
+        /* Walk the item through the stations for this lane's rules. */
+        let clock = born, pos = w * .05;
+        for (st = 0; st < 4; st++) {
+          const travel = (X[st] - pos) / SPEED;
+          clock += travel; pos = X[st];
+          if (clock > p) { x = X[st] - (clock - p) * SPEED; break; }
+          let start = clock;
+          if (lane === 1) { start = Math.max(clock, freeAt); freeAt = start + work; }
+          if (p < start) { x = X[st]; waiting = true; break; }
+          if (p < start + work) { x = X[st]; break; }
+          clock = start + work;
+        }
+        if (st >= 4) { done = true; x = X[3] + (p - clock) * SPEED; }
+        if (x > w * .97) continue;
+        const y = lane === 0 ? yA : yM;
+        ctx.fillStyle = done ? em : (waiting ? am : (lane === 0 ? em : faint));
+        ctx.globalAlpha = waiting ? .95 : .9;
+        if (waiting) {
+          const col = i % 3, row = Math.floor(i / 3);
+          ctx.fillRect(X[st] - 13 - col * 9, y - 4 - row * 9, 7, 7);
+        } else {
+          ctx.fillRect(x - 4, y - 4, 8, 8);
+        }
+      }
+    }
+    ctx.globalAlpha = 1;
+  });
+})();
+
+try { setLang(localStorage.getItem("wr-lang") === "en" ? "en" : "es"); } catch (e) { setLang("es"); }
+</script>
+</body>
+</html>

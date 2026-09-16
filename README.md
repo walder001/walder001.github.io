@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://walder001.github.io/"><strong>Ver portafolio ↗</strong></a>
   &nbsp; · &nbsp;
-  <a href="https://walder001.github.io/laboratorio/ecosistema-3d.html">Explorar laboratorio 3D</a>
+  <a href="https://walder001.github.io/laboratorio/">Explorar el laboratorio</a>
   &nbsp; · &nbsp;
   <a href="mailto:walderreyes34@gmail.com">Contacto</a>
 </p>
@@ -20,7 +20,7 @@ Mi espacio para compartir cómo convierto problemas de negocio en software: inge
 
 - **Trabajo seleccionado:** casos de automatización financiera, procesamiento de documentos con IA y arquitectura modular.
 - **Productos DWALD:** una mirada a DWALD POS y DWALD Loan.
-- **Laboratorio 3D:** un experimento visual e interactivo construido con Three.js.
+- **Laboratorio:** un cuaderno de experimentos interactivos construidos con Three.js, con lo que aprendí en cada uno.
 - **Una experiencia adaptable:** español e inglés, modo claro y oscuro, y diseño para móvil y escritorio.
 
 ### Tecnología
@@ -32,7 +32,7 @@ HTML, CSS y JavaScript, con Three.js para las escenas 3D. Es un sitio estático,
 | Archivo | Contenido |
 | :--- | :--- |
 | [`index.html`](index.html) | Página principal, estilos, traducciones e interacciones |
-| [`laboratorio/ecosistema-3d.html`](laboratorio/ecosistema-3d.html) | Experimento 3D «Ecosistema» |
+| [`laboratorio/`](laboratorio/) | Cuaderno de experimentos: «Colapso» y «Ecosistema» |
 | [`assets/`](assets/) | Favicon, identidad visual e imagen para compartir |
 | [`.nojekyll`](.nojekyll) | Publicación directa de los archivos estáticos |
 

@@ -109,6 +109,25 @@
   .mini figcaption { position: absolute; left: 11px; bottom: 9px; font: 400 10.5px var(--mono);
                      letter-spacing: .07em; text-transform: uppercase; color: var(--faint); }
 
+
+  /* ---- Lab-report grammar ---- */
+  .method { border: 1px solid var(--line); border-radius: 12px; padding: 19px 21px;
+            display: grid; gap: 9px; background: rgba(var(--panel-rgb),.4); }
+  .method p { font-size: 15.5px; line-height: 1.65; color: var(--muted); }
+  .method .rule { color: var(--emerald); }
+  /* `.psi` and not `.ket`: that class already belongs to the logo mark. */
+  .entry .psi { font: 700 14px var(--mono); color: var(--amber); letter-spacing: .01em; }
+  .model { font: 400 11.5px var(--mono); letter-spacing: .04em; color: var(--faint); margin-top: -4px; }
+  .fields { margin: 0; display: grid; gap: 12px; }
+  .field { display: grid; grid-template-columns: 104px 1fr; gap: 3px 18px; align-items: start; }
+  .field dt { font: 400 10.5px var(--mono); letter-spacing: .09em; text-transform: uppercase;
+              color: var(--faint); padding-top: 5px; }
+  .field dd { margin: 0; font-size: 15.5px; line-height: 1.62; color: var(--muted); }
+  .obs { display: flex; flex-wrap: wrap; gap: 5px 14px; padding-top: 11px; border-top: 1px solid var(--line);
+         font: 400 11.5px var(--mono); color: var(--faint); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+  .obs b { color: var(--emerald); font-weight: 400; }
+  @media (max-width: 560px) { .field { grid-template-columns: 1fr; gap: 1px; } .field dt { padding-top: 0; } }
+
   .learned { border-left: 2px solid rgba(var(--amber-rgb),.55); padding: 2px 0 2px 16px; display: grid; gap: 7px; }
   .learned .k { font: 400 10.5px var(--mono); letter-spacing: .09em; text-transform: uppercase; color: var(--amber); }
   .learned p { font-size: 16px; line-height: 1.68; color: var(--muted); }
@@ -123,6 +142,7 @@
 
   /* The notebook is still open: say so structurally, not as a flourish. */
   .next { border: 1px dashed var(--line); border-radius: 12px; padding: 22px 20px; display: grid; gap: 9px; }
+  .next .psi { font: 700 14px var(--mono); color: var(--faint); }
   .next h2 { font-size: 19px; color: var(--faint); }
   .next p { font-size: 15.5px; color: var(--faint); }
 
@@ -157,17 +177,23 @@
   <p class="label" data-i18n="in.k">Laboratorio</p>
   <h1 data-i18n="in.h">Cuaderno de experimentos</h1>
   <p class="lede" data-i18n="in.p1">Aquí pruebo ideas antes de que sean argumentos. Cada experimento se hace una pregunta y trata de responderla con algo que funciona, no con un párrafo.</p>
-  <p class="lede" data-i18n="in.p2">Anoto también lo que salió mal. Una de estas dos piezas nació equivocada y hubo que rehacerla entera; esa parte está contada igual que el resto.</p>
+  <p class="lede" data-i18n="in.p2">Cada uno se apoya en un modelo real —medición cuántica en uno, teoría de colas en el otro— y se anota como un reporte: hipótesis, método, observación y lo que aprendí. Incluido lo que salió mal: una de estas dos piezas nació equivocada y hubo que rehacerla entera.</p>
 </header>
 
 <main class="log wrap" id="log">
 
+  <section class="method">
+    <p class="label" data-i18n="mt.k">Método</p>
+    <p data-i18n-html="mt.p">Cada experimento tiene que pasar una prueba antes de quedarse: <span class="rule">quítale el medio y mira si pierdes el argumento.</span> Si la pieza sigue diciendo lo mismo sin el 3D, el 3D no estaba trabajando. Esa regla descartó la primera versión de |ψ₂⟩.</p>
+  </section>
+
   <article class="entry">
     <div class="top">
-      <span class="no">01</span>
+      <span class="psi">|ψ₁⟩</span>
       <h2>Colapso</h2>
       <span class="status live" data-i18n="st.live">En el sitio</span>
     </div>
+    <p class="model" data-i18n="e1.m">Medición proyectiva · regla de Born</p>
     <p class="q" data-i18n="e1.q">¿Se puede operar una idea abstracta con el dedo?</p>
 
     <figure class="mini" style="margin:0">
@@ -175,12 +201,18 @@
       <figcaption data-i18n="e1.cap">Cinco estados · medición</figcaption>
     </figure>
 
-    <p class="body" data-i18n="e1.b">Cinco estados en superposición, con sus amplitudes cambiando. Haces clic en uno y lo mides: el sistema colapsa sobre él, los demás se apagan y el expediente del caso se abre dentro de la misma escena, sin sacarte a ninguna parte.</p>
+    <dl class="fields">
+      <div class="field"><dt data-i18n="lbl.hyp">Hipótesis</dt><dd data-i18n="e1.h">Si el gesto y el significado son el mismo acto, la pieza no necesita explicarse.</dd></div>
+      <div class="field"><dt data-i18n="lbl.met">Método</dt><dd data-i18n="e1.me">Cinco estados con amplitudes que evolucionan. Un clic mide uno y proyecta el sistema sobre él. El botón «Medir» no elige: sortea según |cᵢ|² en ese instante.</dd></div>
+      <div class="field"><dt data-i18n="lbl.obs">Observación</dt><dd data-i18n="e1.o">El expediente del caso se abre dentro de la escena. Nadie tiene que salir de la pieza para leerlo.</dd></div>
+    </dl>
 
     <div class="learned">
       <span class="k" data-i18n="lbl.learned">Qué aprendí</span>
-      <p data-i18n="e1.l">Que el gesto y el significado tienen que ser el mismo acto. Hacer clic <em>es</em> medir, y medir <em>es</em> colapsar: no hay traducción entre lo que haces y lo que ocurre. Cuando esa distancia es cero, la pieza no necesita explicarse.</p>
+      <p data-i18n-html="e1.l">Que el gesto y el significado tienen que ser el mismo acto. Hacer clic <em>es</em> medir, y medir <em>es</em> colapsar: no hay traducción entre lo que haces y lo que ocurre. Cuando esa distancia es cero, la pieza no necesita explicarse.</p>
     </div>
+
+    <p class="obs" data-i18n-html="e1.ob"><span><b>5</b> estados</span><span><b>5</b> enlaces</span><span><b>20 400</b> puntos de campo</span><span><b>3</b> niveles</span></p>
 
     <div class="meta">
       <a class="open" href="colapso.html"><span data-i18n="cta.open">Abrir el experimento</span> <span aria-hidden="true">→</span></a>
@@ -190,10 +222,11 @@
 
   <article class="entry">
     <div class="top">
-      <span class="no">02</span>
+      <span class="psi">|ψ₂⟩</span>
       <h2>Ecosistema</h2>
       <span class="status" data-i18n="st.branch">En la rama</span>
     </div>
+    <p class="model" data-i18n="e2.m">Teoría de colas · un servidor por estación contra multiservidor</p>
     <p class="q" data-i18n="e2.q">¿Se puede enseñar la diferencia entre lo manual y lo automático sin inventar métricas?</p>
 
     <figure class="mini" style="margin:0">
@@ -201,12 +234,18 @@
       <figcaption data-i18n="e2.cap">Dos carriles · misma carga</figcaption>
     </figure>
 
-    <p class="body" data-i18n="e2.b">Un pago recorre cuatro estaciones, dos veces. Arriba lo hace un sistema; abajo, personas. Manda un pago y los dos carriles van parejos. Manda veinte y la cola manual se apila sola.</p>
+    <dl class="fields">
+      <div class="field"><dt data-i18n="lbl.hyp">Hipótesis</dt><dd data-i18n="e2.h">Si la asimetría sale del modelo, no hace falta ni un número inventado sobre el negocio de nadie.</dd></div>
+      <div class="field"><dt data-i18n="lbl.met">Método</dt><dd data-i18n="e2.me">Dos carriles, las mismas cuatro estaciones y el mismo trabajo en cada una. Lo único que cambia: el automatizado atiende varios pagos a la vez y el manual tiene una persona por estación.</dd></div>
+      <div class="field"><dt data-i18n="lbl.obs">Observación</dt><dd data-i18n="e2.o">Con un pago los dos carriles van parejos. Con veinte, la cola manual se apila sola.</dd></div>
+    </dl>
 
     <div class="learned">
       <span class="k" data-i18n="lbl.learned">Qué aprendí</span>
       <p data-i18n="e2.l">Empezó siendo un mapa: una ciudad con torres etiquetadas. No funcionaba, y la prueba era simple: si le quitabas el 3D no perdías nada, porque el texto lo explicaba todo y la escena solo decoraba. Se rehízo como demostración. La diferencia que se ve no sale de un número inventado sobre el negocio de nadie: sale del modelo, donde un carril atiende varios pagos a la vez y el otro tiene una persona por estación.</p>
     </div>
+
+    <p class="obs" data-i18n-html="e2.ob"><span><b>4</b> estaciones</span><span><b>2</b> carriles</span><span><b>1</b> servidor por estación en el manual</span><span>hasta <b>160</b> pagos en vuelo</span></p>
 
     <div class="meta">
       <a class="open" href="ecosistema-3d.html"><span data-i18n="cta.open">Abrir el experimento</span> <span aria-hidden="true">→</span></a>
@@ -215,9 +254,9 @@
   </article>
 
   <div class="next">
-    <span class="no" style="color:var(--faint)">03</span>
-    <h2 data-i18n="e3.h">Por escribir</h2>
-    <p data-i18n="e3.p">El cuaderno sigue abierto. La próxima idea entra aquí.</p>
+    <span class="psi">|ψ₃⟩</span>
+    <h2 data-i18n="e3.h">Sin medir</h2>
+    <p data-i18n="e3.p">Mientras no lo escriba, este experimento puede ser cualquiera de los que estoy pensando. Eso es, literalmente, una superposición.</p>
   </div>
 
 </main>
@@ -241,7 +280,20 @@ const UI = {
   es: {
     "in.k": "Laboratorio", "in.h": "Cuaderno de experimentos",
     "in.p1": "Aquí pruebo ideas antes de que sean argumentos. Cada experimento se hace una pregunta y trata de responderla con algo que funciona, no con un párrafo.",
-    "in.p2": "Anoto también lo que salió mal. Una de estas dos piezas nació equivocada y hubo que rehacerla entera; esa parte está contada igual que el resto.",
+    "in.p2": "Cada uno se apoya en un modelo real —medición cuántica en uno, teoría de colas en el otro— y se anota como un reporte: hipótesis, método, observación y lo que aprendí. Incluido lo que salió mal: una de estas dos piezas nació equivocada y hubo que rehacerla entera.",
+    "mt.k": "Método",
+    "mt.p": "Cada experimento tiene que pasar una prueba antes de quedarse: <span class=\"rule\">quítale el medio y mira si pierdes el argumento.</span> Si la pieza sigue diciendo lo mismo sin el 3D, el 3D no estaba trabajando. Esa regla descartó la primera versión de |ψ₂⟩.",
+    "lbl.hyp": "Hipótesis", "lbl.met": "Método", "lbl.obs": "Observación",
+    "e1.m": "Medición proyectiva · regla de Born",
+    "e1.h": "Si el gesto y el significado son el mismo acto, la pieza no necesita explicarse.",
+    "e1.me": "Cinco estados con amplitudes que evolucionan. Un clic mide uno y proyecta el sistema sobre él. El botón «Medir» no elige: sortea según |cᵢ|² en ese instante.",
+    "e1.o": "El expediente del caso se abre dentro de la escena. Nadie tiene que salir de la pieza para leerlo.",
+    "e1.ob": "<span><b>5</b> estados</span><span><b>5</b> enlaces</span><span><b>20 400</b> puntos de campo</span><span><b>3</b> niveles</span>",
+    "e2.m": "Teoría de colas · un servidor por estación contra multiservidor",
+    "e2.h": "Si la asimetría sale del modelo, no hace falta ni un número inventado sobre el negocio de nadie.",
+    "e2.me": "Dos carriles, las mismas cuatro estaciones y el mismo trabajo en cada una. Lo único que cambia: el automatizado atiende varios pagos a la vez y el manual tiene una persona por estación.",
+    "e2.o": "Con un pago los dos carriles van parejos. Con veinte, la cola manual se apila sola.",
+    "e2.ob": "<span><b>4</b> estaciones</span><span><b>2</b> carriles</span><span><b>1</b> servidor por estación en el manual</span><span>hasta <b>160</b> pagos en vuelo</span>",
     "st.live": "En el sitio", "st.branch": "En la rama",
     "lbl.learned": "Qué aprendí", "cta.open": "Abrir el experimento",
     "e1.q": "¿Se puede operar una idea abstracta con el dedo?",
@@ -253,13 +305,26 @@ const UI = {
     "e2.b": "Un pago recorre cuatro estaciones, dos veces. Arriba lo hace un sistema; abajo, personas. Manda un pago y los dos carriles van parejos. Manda veinte y la cola manual se apila sola.",
     "e2.l": "Empezó siendo un mapa: una ciudad con torres etiquetadas. No funcionaba, y la prueba era simple: si le quitabas el 3D no perdías nada, porque el texto lo explicaba todo y la escena solo decoraba. Se rehízo como demostración. La diferencia que se ve no sale de un número inventado sobre el negocio de nadie: sale del modelo, donde un carril atiende varios pagos a la vez y el otro tiene una persona por estación.",
     "e2.s": "Three.js · Simulación de colas",
-    "e3.h": "Por escribir", "e3.p": "El cuaderno sigue abierto. La próxima idea entra aquí.",
+    "e3.h": "Sin medir", "e3.p": "Mientras no lo escriba, este experimento puede ser cualquiera de los que estoy pensando. Eso es, literalmente, una superposición.",
     "ft.home": "← Volver al portafolio",
   },
   en: {
     "in.k": "Lab", "in.h": "Experiment notebook",
     "in.p1": "This is where I try ideas before they become arguments. Each experiment asks a question and answers it with something that works, not with a paragraph.",
-    "in.p2": "I write down what went wrong too. One of these two pieces was born wrong and had to be rebuilt from scratch; that part is told like the rest.",
+    "in.p2": "Each one rests on a real model — quantum measurement in one, queueing theory in the other — and is written up like a report: hypothesis, method, observation, and what it taught me. Including what went wrong: one of these two pieces was born wrong and had to be rebuilt from scratch.",
+    "mt.k": "Method",
+    "mt.p": "Every experiment has to pass one test before it stays: <span class=\"rule\">strip the medium away and see whether the argument survives.</span> If the piece still says the same thing without the 3D, the 3D was not working. That rule threw out the first version of |ψ₂⟩.",
+    "lbl.hyp": "Hypothesis", "lbl.met": "Method", "lbl.obs": "Observation",
+    "e1.m": "Projective measurement · Born rule",
+    "e1.h": "If the gesture and the meaning are the same act, the piece needs no explaining.",
+    "e1.me": "Five states with evolving amplitudes. A click measures one and projects the system onto it. The \u201cMeasure\u201d button does not choose: it draws from |cᵢ|² at that instant.",
+    "e1.o": "The case file opens inside the scene. Nobody has to leave the piece to read it.",
+    "e1.ob": "<span><b>5</b> states</span><span><b>5</b> links</span><span><b>20,400</b> field points</span><span><b>3</b> levels</span>",
+    "e2.m": "Queueing theory · one server per station versus many",
+    "e2.h": "If the asymmetry falls out of the model, no invented number about anyone's business is needed.",
+    "e2.me": "Two lanes, the same four stations, the same work at each. The only difference: the automated lane serves several payments at once and the manual one has one person per station.",
+    "e2.o": "With one payment both lanes keep pace. With twenty, the manual queue piles up on its own.",
+    "e2.ob": "<span><b>4</b> stations</span><span><b>2</b> lanes</span><span><b>1</b> server per station in the manual lane</span><span>up to <b>160</b> payments in flight</span>",
     "st.live": "Live", "st.branch": "On a branch",
     "lbl.learned": "What it taught me", "cta.open": "Open the experiment",
     "e1.q": "Can an abstract idea be operated with a finger?",
@@ -271,7 +336,7 @@ const UI = {
     "e2.b": "A payment runs four stations, twice. Up top a system does it; below, people do. Send one payment and both lanes keep pace. Send twenty and the manual queue piles up on its own.",
     "e2.l": "It started as a map: a city with labelled towers. It did not work, and the test was simple: strip the 3D away and you lost nothing, because the text explained everything and the scene only decorated it. It was rebuilt as a demonstration. The difference you see does not come from an invented number about anyone's business: it falls out of the model, where one lane serves several payments at once and the other has one person per station.",
     "e2.s": "Three.js · Queue simulation",
-    "e3.h": "Unwritten", "e3.p": "The notebook is still open. The next idea goes here.",
+    "e3.h": "Unmeasured", "e3.p": "Until I write it, this experiment can be any of the ones I am considering. That is, literally, a superposition.",
     "ft.home": "← Back to the portfolio",
   },
 };
@@ -283,8 +348,11 @@ function setLang(next) {
   const d = UI[next] || UI.es;
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const v = d[el.dataset.i18n];
-    if (v == null) return;
-    if (v.indexOf("<em>") >= 0) el.innerHTML = v; else el.textContent = v;
+    if (v != null) el.textContent = v;
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+    const v = d[el.dataset.i18nHtml];
+    if (v != null) el.innerHTML = v;   /* only our own strings ever land here */
   });
   document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === next)));
   try { localStorage.setItem("wr-lang", next); } catch (e) {}

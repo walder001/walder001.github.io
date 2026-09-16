@@ -169,8 +169,16 @@
     .hint, .tags { display: none; }
     .detail { left: var(--pad) !important; right: var(--pad); top: 76px !important; width: auto; }
   }
+  /* A way back up: the logo goes home, this goes to the notebook. */
+  .crumbs { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .crumb { font: 400 11px var(--mono); letter-spacing: .09em; text-transform: uppercase;
+           color: var(--faint); text-decoration: none; white-space: nowrap; }
+  a.crumb:hover { color: var(--emerald); text-decoration: underline; text-underline-offset: 3px; }
+  .crumb.now { color: var(--muted); }
+  .crumb-sep { color: var(--faint); opacity: .55; font: 400 11px var(--mono); }
+
   @media (max-width: 560px) {
-    .top .label, .top .chip-link { display: none; }
+    .top .crumb.now, .top .crumb-sep, .top .chip-link { display: none; }   /* the way back survives */
     .station { padding: 7px 11px; gap: 5px; }
     .op { padding: 8px 13px; }
   }
@@ -188,7 +196,11 @@
     <svg class="ket" viewBox="0 0 44 40" aria-hidden="true"><path d="M5 5v30"/><path d="M33 5l7 15-7 15"/><circle class="q" cx="19" cy="20" r="9"/><ellipse class="q2" cx="19" cy="20" rx="9" ry="3.2"/><path class="v" d="M19 20l5.6-6.6"/><circle class="dot" cx="25" cy="13" r="2.4"/></svg>
     <span>walder<b class="em">.reyes</b></span>
   </a>
-  <span class="label" data-i18n="lab.tag">Laboratorio · Ecosistema</span>
+  <nav class="crumbs" aria-label="Ruta">
+    <a class="crumb" href="./" data-i18n="nav.lab">Laboratorio</a>
+    <span class="crumb-sep" aria-hidden="true">·</span>
+    <span class="crumb now" aria-current="page">Ecosistema</span>
+  </nav>
   <span class="sep"></span>
   <a class="chip-link" href="colapso.html" data-i18n="lab.col">Colapso ↗</a>
   <div class="lang" role="group" aria-label="Idioma / Language">
@@ -246,7 +258,10 @@
     <p class="label" data-i18n="fb.k">Sin WebGL</p>
     <h2 style="margin:10px 0" data-i18n="fb.h">Esta pieza necesita WebGL</h2>
     <p data-i18n="fb.p">Tu navegador no pudo iniciar la escena 3D. El resto del portafolio funciona igual.</p>
-    <p style="margin-top:18px"><a class="chip-link" href="../" data-i18n="fb.b">Volver al portafolio</a></p>
+    <p style="margin-top:18px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap">
+      <a class="chip-link" href="./" data-i18n="fb.lab">Volver al laboratorio</a>
+      <a class="chip-link" href="../" data-i18n="fb.b">Ir al portafolio</a>
+    </p>
   </div>
 </div>
 
@@ -285,7 +300,7 @@ const STATIONS = [
 
 const UI = {
   es: {
-    "lab.tag": "Laboratorio · Ecosistema", "lab.col": "Colapso ↗",
+    "nav.lab": "Laboratorio", "lab.col": "Colapso ↗",
     "lab.hint": "Haz clic en una estación para ver qué hace",
     "bd.h": "El mismo trabajo, dos veces",
     "bd.p": "Cada pago recorre las mismas cuatro estaciones. Arriba lo hace un sistema; abajo, personas.",
@@ -294,10 +309,10 @@ const UI = {
     "op.one": "Recibe un pago", "op.burst": "Recibe 20", "op.reset": "Reiniciar", "close": "Cerrar",
     "fb.k": "Sin WebGL", "fb.h": "Esta pieza necesita WebGL",
     "fb.p": "Tu navegador no pudo iniciar la escena 3D. El resto del portafolio funciona igual.",
-    "fb.b": "Volver al portafolio",
+    "fb.lab": "Volver al laboratorio", "fb.b": "Ir al portafolio",
   },
   en: {
-    "lab.tag": "Lab · Ecosystem", "lab.col": "Collapse ↗",
+    "nav.lab": "Lab", "lab.col": "Collapse ↗",
     "lab.hint": "Click a station to see what it does",
     "bd.h": "The same work, twice",
     "bd.p": "Every payment runs the same four stations. Up top a system does it; below, people do.",
@@ -306,7 +321,7 @@ const UI = {
     "op.one": "Receive a payment", "op.burst": "Receive 20", "op.reset": "Reset", "close": "Close",
     "fb.k": "No WebGL", "fb.h": "This piece needs WebGL",
     "fb.p": "Your browser could not start the 3D scene. The rest of the portfolio works fine.",
-    "fb.b": "Back to the portfolio",
+    "fb.lab": "Back to the lab", "fb.b": "Go to the portfolio",
   },
 };
 
